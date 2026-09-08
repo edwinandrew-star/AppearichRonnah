@@ -4,10 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Appearich Portal</title>
-
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4"></script>
-
   <style>
     :root {
       --primary-yellow:#facc15;
@@ -19,11 +17,9 @@
       --card-gray:#f9fafb;
       --muted:#6b7280;
     }
-
     * {
       box-sizing:border-box;
     }
-
     body {
       font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
       background:var(--pure-white);
@@ -31,21 +27,17 @@
       margin:0;
       min-height:100vh;
     }
-
     .hidden {
       display:none!important;
     }
-
     .app-container {
       max-width:1200px;
       margin:0 auto;
       padding:20px;
     }
-
     /* =========================================================
        SPLASH
        ========================================================= */
-
     #splash-screen {
       position:fixed;
       inset:0;
@@ -56,12 +48,10 @@
       z-index:99999;
       transition:opacity .4s ease, visibility .4s ease;
     }
-
     #splash-screen.fade-out {
       opacity:0;
       visibility:hidden;
     }
-
     .logo-main-text {
       font-size:4.5rem;
       font-weight:900;
@@ -69,7 +59,6 @@
       letter-spacing:4px;
       text-align:center;
     }
-
     .logo-sub-text {
       color:var(--primary-yellow);
       font-size:1.6rem;
@@ -77,11 +66,9 @@
       font-weight:600;
       text-align:center;
     }
-
     /* =========================================================
        CLEAN WELCOME / ROLE SCREEN
        ========================================================= */
-
     #role-selection-screen {
       min-height:100vh;
       display:flex;
@@ -91,13 +78,11 @@
       background:
         radial-gradient(circle at top, #1f2937 0%, #000 55%);
     }
-
     .role-container {
       width:100%;
       max-width:620px;
       text-align:center;
     }
-
     .role-logo {
       font-size:3.5rem;
       font-weight:900;
@@ -105,37 +90,31 @@
       color:#fff;
       margin-bottom:4px;
     }
-
     .role-tagline {
       color:var(--primary-yellow);
       font-weight:700;
       letter-spacing:2px;
       margin-bottom:35px;
     }
-
     .role-card {
       background:#fff;
       border-radius:18px;
       padding:35px;
       box-shadow:0 20px 60px rgba(0,0,0,.35);
     }
-
     .role-card h1 {
       margin:0 0 8px;
       font-size:2rem;
     }
-
     .role-card p {
       color:var(--muted);
       margin-bottom:28px;
     }
-
     .role-buttons {
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:18px;
     }
-
     .role-button {
       min-height:130px;
       border-radius:14px;
@@ -148,33 +127,27 @@
       cursor:pointer;
       transition:.2s ease;
     }
-
     .role-button:hover {
       transform:translateY(-3px);
       border-color:var(--primary-yellow);
       box-shadow:0 10px 25px rgba(0,0,0,.12);
     }
-
     .role-icon {
       display:block;
       font-size:2.5rem;
       margin-bottom:10px;
     }
-
     @media(max-width:600px) {
       .role-buttons {
         grid-template-columns:1fr;
       }
-
       .role-logo {
         font-size:2.8rem;
       }
     }
-
     /* =========================================================
        AUTH SCREEN
        ========================================================= */
-
     #auth-screen {
       min-height:100vh;
       display:flex;
@@ -184,12 +157,10 @@
       background:
         radial-gradient(circle at top, #1f2937 0%, #000 65%);
     }
-
     .auth-wrapper {
       width:100%;
       max-width:500px;
     }
-
     .auth-brand {
       text-align:center;
       color:#fff;
@@ -198,7 +169,6 @@
       letter-spacing:3px;
       margin-bottom:20px;
     }
-
     .auth-card {
       background:#fff;
       border-radius:16px;
@@ -206,16 +176,13 @@
       padding:30px;
       box-shadow:0 20px 60px rgba(0,0,0,.35);
     }
-
     .auth-card h1 {
       margin-top:0;
       margin-bottom:8px;
     }
-
     .auth-card h3 {
       margin-bottom:8px;
     }
-
     .auth-header {
       display:flex;
       align-items:center;
@@ -223,46 +190,38 @@
       gap:10px;
       margin-bottom:20px;
     }
-
     .back-btn {
       background:#111827;
       color:#facc15;
       padding:9px 13px;
       border-radius:7px;
     }
-
     .auth-tabs {
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:8px;
       margin-bottom:20px;
     }
-
     .auth-tab {
       background:#e5e7eb;
       color:#111827;
       border-radius:7px;
     }
-
     .auth-tab.active {
       background:#facc15;
       color:#000;
     }
-
     .full-btn {
       width:100%;
     }
-
     hr {
       border:none;
       border-top:1px solid #e5e7eb;
       margin:25px 0;
     }
-
     /* =========================================================
        MAIN PORTAL
        ========================================================= */
-
     .hero-banner-full {
       width:100vw;
       position:relative;
@@ -283,14 +242,12 @@
       margin-bottom:45px;
       border-bottom:6px solid var(--primary-yellow);
     }
-
     .hero-banner-full h1 {
       margin:0;
       font-size:3.5rem;
       color:var(--primary-yellow);
       font-weight:900;
     }
-
     .section-title {
       font-size:1.8rem;
       font-weight:800;
@@ -298,25 +255,21 @@
       padding-left:15px;
       margin:28px 0 20px;
     }
-
     .papers-grid,
     .subjects-grid {
       display:grid;
       grid-template-columns:repeat(3,1fr);
       gap:20px;
     }
-
     @media(max-width:768px) {
       .papers-grid,
       .subjects-grid {
         grid-template-columns:1fr;
       }
-
       .logo-main-text {
         font-size:3rem;
       }
     }
-
     .paper-card,
     .subject-card,
     .admin-card {
@@ -325,22 +278,18 @@
       border:2px solid #e5e7eb;
       padding:25px;
     }
-
     .subject-card {
       transition:.2s ease;
     }
-
     .subject-card:hover {
       transform:translateY(-3px);
       border-color:var(--primary-yellow);
     }
-
     .paper-card {
       display:flex;
       flex-direction:column;
       justify-content:space-between;
     }
-
     button,
     .action-btn {
       background:var(--primary-yellow);
@@ -351,27 +300,22 @@
       cursor:pointer;
       font-weight:700;
     }
-
     button.secondary {
       background:#111827;
       color:var(--primary-yellow);
     }
-
     button.danger {
       background:var(--danger-red);
       color:#fff;
     }
-
     button.success {
       background:var(--success-green);
       color:#fff;
     }
-
     button:disabled {
       opacity:.55;
       cursor:not-allowed;
     }
-
     input,
     select,
     textarea {
@@ -382,19 +326,16 @@
       border-radius:6px;
       font:inherit;
     }
-
     .row {
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:16px;
     }
-
     @media(max-width:700px) {
       .row {
         grid-template-columns:1fr;
       }
     }
-
     .exam-window {
       background:#fff;
       padding:40px;
@@ -402,7 +343,6 @@
       border:3px solid #111827;
       position:relative;
     }
-
     .timer {
       font-size:1.25rem;
       font-weight:bold;
@@ -412,7 +352,6 @@
       border-radius:6px;
       float:right;
     }
-
     .file-display-container {
       width:100%;
       margin:20px 0;
@@ -420,7 +359,6 @@
       padding:10px;
       border:2px solid #e5e7eb;
     }
-
     .warning-screen {
       position:fixed;
       inset:0;
@@ -434,7 +372,6 @@
       text-align:center;
       padding:20px;
     }
-
     .status {
       display:inline-block;
       padding:5px 10px;
@@ -442,17 +379,14 @@
       font-size:.8rem;
       font-weight:800;
     }
-
     .locked {
       background:#fee2e2;
       color:#991b1b;
     }
-
     .unlocked {
       background:#dcfce7;
       color:#166534;
     }
-
     .material-item {
       background:#fff;
       border:1px solid #e5e7eb;
@@ -460,14 +394,12 @@
       border-radius:8px;
       margin:10px 0;
     }
-
     .toolbar {
       display:flex;
       gap:10px;
       flex-wrap:wrap;
       align-items:center;
     }
-
     .topbar {
       display:flex;
       justify-content:space-between;
@@ -475,7 +407,6 @@
       align-items:center;
       margin-bottom:18px;
     }
-
     .score-board {
       background:#1e293b;
       padding:25px;
@@ -486,606 +417,401 @@
       max-width:500px;
       text-align:left;
     }
-
     .score-row {
       display:flex;
       justify-content:space-between;
       padding:10px 0;
       border-bottom:1px solid #334155;
     }
-
     .small {
       color:var(--muted);
       font-size:.9rem;
     }
-
     .notice {
       padding:12px;
       border-radius:6px;
       margin:10px 0;
       background:#fef3c7;
     }
-
     .error-notice {
       background:#fee2e2;
       color:#991b1b;
     }
-
     .success-notice {
       background:#dcfce7;
       color:#166534;
     }
   </style>
 </head>
-
 <body>
-
 <!-- ============================================================
      SPLASH
      ============================================================ -->
-
 <div id="splash-screen">
   <div>
     <div class="logo-main-text">Appearich</div>
     <div class="logo-sub-text">The Next Chapter</div>
   </div>
 </div>
-
-
 <!-- ============================================================
      ROLE SELECTION
      ============================================================ -->
-
 <div id="role-selection-screen" class="hidden">
-
   <div class="role-container">
-
     <div class="role-logo">
       Appearich
     </div>
-
     <div class="role-tagline">
       THE NEXT CHAPTER
     </div>
-
     <div class="role-card">
-
       <h1>Welcome</h1>
-
       <p>
         Select how you want to continue to the portal.
       </p>
-
       <div class="role-buttons">
-
         <button
           class="role-button"
           onclick="openStudentAuth()">
-
           <span class="role-icon">🎓</span>
           Student
-
         </button>
-
         <button
           class="role-button"
           onclick="openTeacherAuth()">
-
           <span class="role-icon">👨‍🏫</span>
           Teacher
-
         </button>
-
       </div>
-
     </div>
-
   </div>
-
 </div>
-
-
 <!-- ============================================================
      AUTH SCREEN
      ============================================================ -->
-
 <div id="auth-screen" class="hidden">
-
   <div class="auth-wrapper">
-
     <div class="auth-brand">
       Appearich
     </div>
-
     <div class="auth-card">
-
       <div class="auth-header">
-
         <div>
           <h1 id="auth-title">
             Student Login
           </h1>
-
           <div
             id="auth-subtitle"
             class="small">
             Sign in to your student portal.
           </div>
         </div>
-
         <button
           class="back-btn"
           onclick="backToRoles()">
           ← Back
         </button>
-
       </div>
-
-
-      <!-- STUDENT TABS -->
-
+      <!-- TABS (Dynamic for Student or Teacher) -->
       <div
-        id="student-auth-tabs"
+        id="auth-tabs"
         class="auth-tabs">
-
         <button
-          id="student-login-tab"
+          id="auth-login-tab"
           class="auth-tab active"
-          onclick="showStudentLogin()">
+          onclick="handleTabLoginClick()">
           Login
         </button>
-
         <button
-          id="student-signup-tab"
+          id="auth-signup-tab"
           class="auth-tab"
-          onclick="showStudentSignup()">
+          onclick="handleTabSignupClick()">
           Sign Up
         </button>
-
       </div>
-
-
       <!-- LOGIN FORM -->
-
       <div id="login-form">
-
         <input
           id="login-email"
           type="email"
           placeholder="Email"
           autocomplete="email">
-
         <input
           id="login-password"
           type="password"
           placeholder="Password"
           autocomplete="current-password">
-
         <button
           class="secondary full-btn"
           onclick="login()">
           Log In
         </button>
-
       </div>
-
-
-      <!-- STUDENT SIGNUP FORM -->
-
+      <!-- SIGNUP FORM (Used for both Students and Teachers) -->
       <div
         id="signup-form"
         class="hidden">
-
-        <p class="small">
-          Create a new student account.
-          Student accounts are authorized automatically
-          according to your portal configuration.
+        <p class="small" id="signup-notice-text">
+          Create a new account.
         </p>
-
         <input
           id="signup-email"
           type="email"
-          placeholder="Student email"
+          placeholder="Email"
           autocomplete="email">
-
         <input
           id="signup-password"
           type="password"
           placeholder="Password (minimum 6 characters)"
           autocomplete="new-password">
-
         <button
           class="full-btn"
-          onclick="signupStudent()">
-          Create Student Account
+          onclick="signupAccount()">
+          Create Account
         </button>
-
       </div>
-
-
       <div
         id="auth-message"
         class="notice hidden">
       </div>
-
     </div>
-
   </div>
-
 </div>
-
-
 <!-- ============================================================
      STUDENT PORTAL
      ============================================================ -->
-
 <div
   id="main-dashboard"
   class="app-container hidden">
-
   <div class="topbar">
-
     <div>
       <b id="student-name">
         Student
       </b>
-
       <div class="small">
         Student Portal
       </div>
     </div>
-
     <button
       class="secondary"
       onclick="logout()">
       Log out
     </button>
-
   </div>
-
-
   <div class="hero-banner-full">
-
     <h1>
       Appearich
     </h1>
-
     <p>
       "Saw a seed of preparation today for ur next chapter"
     </p>
-
   </div>
-
-
   <h2 class="section-title">
     Your Published Grades
   </h2>
-
-
   <div class="score-board">
-
     <div
       class="score-row"
       style="font-weight:bold;color:var(--primary-yellow)">
-
       <span>
         Subject Name
       </span>
-
       <span>
         Achieved Grade
       </span>
-
     </div>
-
-
     <div
       class="score-row"
       style="color:#cbd5e1">
-
       <span>
         Mathematics Core Paper
       </span>
-
       <span id="grade-math-box">
         PENDING
       </span>
-
     </div>
-
-
     <div
       class="score-row"
       style="color:#cbd5e1">
-
       <span>
         Science Core Paper
       </span>
-
       <span id="grade-science-box">
         NOT ATTEMPTED
       </span>
-
     </div>
-
   </div>
-
-
   <h2 class="section-title">
     Subjects
   </h2>
-
-
   <div
     id="student-subjects"
     class="subjects-grid">
   </div>
-
-
   <div
     id="student-materials-section"
     class="hidden">
-
     <div class="toolbar">
-
       <button
         class="secondary"
         onclick="closeStudentSubject()">
         ← Subjects
       </button>
-
       <h2
         id="student-subject-title"
         class="section-title"
         style="margin:0">
         Subject
       </h2>
-
     </div>
-
     <div id="student-materials"></div>
-
   </div>
-
 </div>
-
-
 <!-- ============================================================
      EXAM WORKSPACE
      ============================================================ -->
-
 <div
   id="exam-workspace-screen"
   class="app-container hidden">
-
   <div class="exam-window">
-
     <span class="timer">
-
       Time Left:
-
       <span id="time-display">
         75:00
       </span>
-
     </span>
-
     <h2 id="exam-title-header">
       Exam Paper
     </h2>
-
     <hr>
-
     <div
       id="questions-injection-box"
       class="file-display-container">
     </div>
-
     <button
       class="success"
       style="width:100%"
       onclick="triggerManualFinish()">
-
       Finish Exam & Submit Work
-
     </button>
-
   </div>
-
 </div>
-
-
 <!-- ============================================================
      LOCKOUT
      ============================================================ -->
-
 <div
   id="lockout-screen"
   class="warning-screen hidden">
-
   <h1
     style="color:var(--danger-red);font-size:3rem">
-
     🔴 ACCESS DENIED
-
   </h1>
-
   <p id="lockout-paragraph">
     This exam attempt is locked.
     Please contact your instructor.
   </p>
-
   <button onclick="returnToStudentPortal()">
     Return to Portal
   </button>
-
 </div>
-
-
 <!-- ============================================================
      TEACHER / ADMIN PORTAL
      ============================================================ -->
-
 <div
   id="teacher-portal"
   class="app-container hidden">
-
   <div class="topbar">
-
     <div>
-
       <b id="teacher-name">
         Teacher/Admin
       </b>
-
       <div class="small">
         Authorized Teacher/Admin Portal
       </div>
-
     </div>
-
     <button
       class="secondary"
       onclick="logout()">
       Log out
     </button>
-
   </div>
-
-
   <div class="hero-banner-full">
-
     <h1>
       Appearich
     </h1>
-
     <p>
       Academic Management
     </p>
-
   </div>
-
-
   <div class="admin-card">
-
     <h2>
       Upload Academic Material
     </h2>
-
-
     <div class="row">
-
       <div>
-
         <label>
           Type
         </label>
-
         <select id="material-type">
-
           <option value="exam">
             Exam
           </option>
-
           <option value="assignment">
             Assignment
           </option>
-
         </select>
-
       </div>
-
-
       <div>
-
         <label>
           Subject
         </label>
-
         <select id="material-subject">
         </select>
-
       </div>
-
     </div>
-
-
     <input
       id="material-title"
       placeholder="Material title">
-
-
     <textarea
       id="material-details"
       rows="3"
       placeholder="Details / instructions">
     </textarea>
-
-
     <input
       id="material-unlock-code"
       placeholder="Unlock code (required for exams)">
-
-
     <input
       id="material-file"
       type="file"
       accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg">
-
-
     <button onclick="uploadMaterial()">
       Upload & Store Permanently
     </button>
-
-
     <div
       id="admin-message"
       class="notice hidden">
     </div>
-
   </div>
-
-
   <h2 class="section-title">
     Permanent Academic Archive
   </h2>
-
-
   <div id="admin-archive"></div>
-
 </div>
-
-
 <script>
-
 /* ============================================================
    APPEARICH PORTAL
    ============================================================ */
-
-
 /* ============================================================
    SUPABASE CONFIGURATION
    ============================================================ */
-
 const SUPABASE_URL =
   "https://ccrxhifqtdhnkmxbafks.supabase.co";
-
-/*
- * Current Supabase Publishable Key.
- *
- * Do NOT use the old anon JWT here.
- */
 const SUPABASE_PUBLISHABLE_KEY =
   "sb_publishable_ziPIPAbBa7Ta2XpIGeDfiA_LnCkZ0YB";
-
-
 let supabase = null;
-
-
 /* ============================================================
    SUBJECT SOURCE OF TRUTH
    ============================================================ */
-
 const SUBJECTS = [
   "Maths",
   "Economics",
@@ -1096,237 +822,164 @@ const SUBJECTS = [
   "Computer Science",
   "Business"
 ];
-
-
 /* ============================================================
    APPLICATION STATE
    ============================================================ */
-
 let currentUser = null;
 let currentRole = null;
+let currentAuthMode = "student"; // "student" or "teacher"
 let currentMaterial = null;
 let examDeadline = null;
 let globalTimingInterval = null;
 let isExamActive = false;
-
-
 /* ============================================================
    BASIC UI
    ============================================================ */
-
 function show(id) {
-
   const element =
     document.getElementById(id);
-
   if (element) {
     element.classList.remove("hidden");
   }
 }
-
-
 function hide(id) {
-
   const element =
     document.getElementById(id);
-
   if (element) {
     element.classList.add("hidden");
   }
 }
-
-
 function message(id, text, type = "normal") {
-
   const element =
     document.getElementById(id);
-
   if (!element) return;
-
   element.textContent = text;
-
   element.classList.remove(
     "hidden",
     "error-notice",
     "success-notice"
   );
-
   if (type === "error") {
     element.classList.add("error-notice");
   }
-
   if (type === "success") {
     element.classList.add("success-notice");
   }
 }
-
-
 /* ============================================================
-   ROLE SELECTION
+   ROLE SELECTION & AUTH MODES
    ============================================================ */
-
 function openStudentAuth() {
-
+  currentAuthMode = "student";
   hide("role-selection-screen");
   show("auth-screen");
-
-  document.getElementById(
-    "auth-title"
-  ).textContent =
-    "Student Login";
-
-  document.getElementById(
-    "auth-subtitle"
-  ).textContent =
-    "Sign in or create your student account.";
-
-  show("student-auth-tabs");
-
+  show("auth-tabs");
   showStudentLogin();
-
   clearAuthMessage();
 }
-
 
 function openTeacherAuth() {
-
+  currentAuthMode = "teacher";
   hide("role-selection-screen");
   show("auth-screen");
-
-  document.getElementById(
-    "auth-title"
-  ).textContent =
-    "Teacher Login";
-
-  document.getElementById(
-    "auth-subtitle"
-  ).textContent =
-    "Authorized teacher/admin accounts only.";
-
-  hide("student-auth-tabs");
-
-  show("login-form");
-  hide("signup-form");
-
+  show("auth-tabs"); // Now enabled for teachers too!
+  showTeacherLogin();
   clearAuthMessage();
-
-  document.getElementById(
-    "login-email"
-  ).value = "";
-
-  document.getElementById(
-    "login-password"
-  ).value = "";
 }
-
 
 function backToRoles() {
-
   hide("auth-screen");
-
   show("role-selection-screen");
-
   clearAuthMessage();
 }
 
-
 function clearAuthMessage() {
-
   const element =
     document.getElementById("auth-message");
-
   if (!element) return;
-
   element.textContent = "";
-
   element.classList.add("hidden");
-
   element.classList.remove(
     "error-notice",
     "success-notice"
   );
 }
 
-
 /* ============================================================
-   STUDENT AUTH TABS
+   AUTH TABS LOGIC
    ============================================================ */
+function handleTabLoginClick() {
+  if (currentAuthMode === "student") {
+    showStudentLogin();
+  } else {
+    showTeacherLogin();
+  }
+}
+
+function handleTabSignupClick() {
+  if (currentAuthMode === "student") {
+    showStudentSignup();
+  } else {
+    showTeacherSignup();
+  }
+}
 
 function showStudentLogin() {
-
   show("login-form");
   hide("signup-form");
-
-  document.getElementById(
-    "student-login-tab"
-  ).classList.add("active");
-
-  document.getElementById(
-    "student-signup-tab"
-  ).classList.remove("active");
-
-  document.getElementById(
-    "auth-title"
-  ).textContent =
-    "Student Login";
-
-  document.getElementById(
-    "auth-subtitle"
-  ).textContent =
-    "Sign in to your student portal.";
-
+  document.getElementById("auth-login-tab").classList.add("active");
+  document.getElementById("auth-signup-tab").classList.remove("active");
+  document.getElementById("auth-title").textContent = "Student Login";
+  document.getElementById("auth-subtitle").textContent = "Sign in to your student portal.";
   clearAuthMessage();
 }
-
 
 function showStudentSignup() {
-
   hide("login-form");
   show("signup-form");
-
-  document.getElementById(
-    "student-login-tab"
-  ).classList.remove("active");
-
-  document.getElementById(
-    "student-signup-tab"
-  ).classList.add("active");
-
-  document.getElementById(
-    "auth-title"
-  ).textContent =
-    "Create Student Account";
-
-  document.getElementById(
-    "auth-subtitle"
-  ).textContent =
-    "Create your account to access the student portal.";
-
+  document.getElementById("auth-login-tab").classList.remove("active");
+  document.getElementById("auth-signup-tab").classList.add("active");
+  document.getElementById("auth-title").textContent = "Create Student Account";
+  document.getElementById("auth-subtitle").textContent = "Create your account to access the student portal.";
+  document.getElementById("signup-notice-text").textContent = "Create a new student account. Student accounts are authorized automatically according to your portal configuration.";
   clearAuthMessage();
 }
 
+function showTeacherLogin() {
+  show("login-form");
+  hide("signup-form");
+  document.getElementById("auth-login-tab").classList.add("active");
+  document.getElementById("auth-signup-tab").classList.remove("active");
+  document.getElementById("auth-title").textContent = "Teacher Login";
+  document.getElementById("auth-subtitle").textContent = "Authorized teacher/admin accounts only.";
+  clearAuthMessage();
+  document.getElementById("login-email").value = "";
+  document.getElementById("login-password").value = "";
+}
+
+function showTeacherSignup() {
+  hide("login-form");
+  show("signup-form");
+  document.getElementById("auth-login-tab").classList.remove("active");
+  document.getElementById("auth-signup-tab").classList.add("active");
+  document.getElementById("auth-title").textContent = "Create Teacher Account";
+  document.getElementById("auth-subtitle").textContent = "Register a new teacher/admin account.";
+  document.getElementById("signup-notice-text").textContent = "Create a new teacher account. Note: Teacher profiles may require admin verification depending on database policies.";
+  clearAuthMessage();
+}
 
 /* ============================================================
    SUPABASE INITIALIZATION
    ============================================================ */
-
 function initializeSupabase() {
-
   if (
     !window.supabase ||
     typeof window.supabase.createClient !== "function"
   ) {
-
-    console.error(
-      "Supabase JavaScript library failed to load."
-    );
-
+    console.error("Supabase JavaScript library failed to load.");
     return false;
   }
-
-
   try {
-
     supabase =
       window.supabase.createClient(
         SUPABASE_URL,
@@ -1339,70 +992,37 @@ function initializeSupabase() {
           }
         }
       );
-
     return true;
-
   }
-
   catch(error) {
-
-    console.error(
-      "Supabase initialization failed:",
-      error
-    );
-
+    console.error("Supabase initialization failed:", error);
     return false;
   }
 }
-
-
 /* ============================================================
    LOGIN
    ============================================================ */
-
 async function login() {
-
   if (!supabase) {
-
     return message(
       "auth-message",
       "Authentication service is not ready. Please refresh the page.",
       "error"
     );
   }
-
-
   const email =
-    document.getElementById(
-      "login-email"
-    ).value.trim();
-
-
+    document.getElementById("login-email").value.trim();
   const password =
-    document.getElementById(
-      "login-password"
-    ).value;
-
-
+    document.getElementById("login-password").value;
   if (!email || !password) {
-
     return message(
       "auth-message",
       "Please enter your email and password.",
       "error"
     );
   }
-
-
-  message(
-    "auth-message",
-    "Signing in...",
-    "normal"
-  );
-
-
+  message("auth-message", "Signing in...", "normal");
   try {
-
     const {
       data,
       error
@@ -1411,166 +1031,84 @@ async function login() {
         email,
         password
       });
-
-
     if (error) {
-
-      return message(
-        "auth-message",
-        error.message,
-        "error"
-      );
+      return message("auth-message", error.message, "error");
     }
-
-
-    await routeAuthenticatedUser(
-      data.user
-    );
-
+    await routeAuthenticatedUser(data.user);
   }
-
   catch(error) {
-
     console.error(error);
-
-    message(
-      "auth-message",
-      "Unable to sign in. Please try again.",
-      "error"
-    );
+    message("auth-message", "Unable to sign in. Please try again.", "error");
   }
 }
-
-
 /* ============================================================
-   STUDENT SIGNUP
+   ACCOUNT SIGNUP (Shared handler for Student & Teacher)
    ============================================================ */
-
-async function signupStudent() {
-
+async function signupAccount() {
   if (!supabase) {
-
     return message(
       "auth-message",
       "Authentication service is not ready. Please refresh the page.",
       "error"
     );
   }
-
-
   const email =
-    document.getElementById(
-      "signup-email"
-    ).value.trim();
-
-
+    document.getElementById("signup-email").value.trim();
   const password =
-    document.getElementById(
-      "signup-password"
-    ).value;
-
+    document.getElementById("signup-password").value;
 
   if (!email || !password) {
-
-    return message(
-      "auth-message",
-      "Please enter an email and password.",
-      "error"
-    );
+    return message("auth-message", "Please enter an email and password.", "error");
   }
-
-
   if (password.length < 6) {
-
-    return message(
-      "auth-message",
-      "Password must contain at least 6 characters.",
-      "error"
-    );
+    return message("auth-message", "Password must contain at least 6 characters.", "error");
   }
 
-
-  message(
-    "auth-message",
-    "Creating student account...",
-    "normal"
-  );
-
+  const roleToAssign = (currentAuthMode === "teacher") ? "teacher/admin" : "student";
+  message("auth-message", `Creating ${currentAuthMode} account...`, "normal");
 
   try {
-
     const {
       data,
       error
     } =
       await supabase.auth.signUp({
         email,
-        password
+        password,
+        options: {
+          data: {
+            role: roleToAssign,
+            full_name: email.split('@')[0]
+          }
+        }
       });
 
-
     if (error) {
-
-      return message(
-        "auth-message",
-        error.message,
-        "error"
-      );
+      return message("auth-message", error.message, "error");
     }
-
 
     if (data.session) {
-
-      message(
-        "auth-message",
-        "Student account created successfully.",
-        "success"
-      );
-
-      await routeAuthenticatedUser(
-        data.user
-      );
-
+      message("auth-message", "Account created successfully.", "success");
+      await routeAuthenticatedUser(data.user);
     }
-
     else {
-
-      message(
-        "auth-message",
-        "Account created. Check your email if email confirmation is enabled.",
-        "success"
-      );
+      message("auth-message", "Account created. Check your email if confirmation is enabled.", "success");
     }
-
   }
-
   catch(error) {
-
     console.error(error);
-
-    message(
-      "auth-message",
-      "Unable to create the account. Please try again.",
-      "error"
-    );
+    message("auth-message", "Unable to create the account. Please try again.", "error");
   }
 }
-
 
 /* ============================================================
    ROUTE AUTHENTICATED USER
    ============================================================ */
-
 async function routeAuthenticatedUser(user) {
-
   if (!supabase || !user) {
     return;
   }
-
-
   currentUser = user;
-
-
   const {
     data:profile,
     error
@@ -1581,39 +1119,20 @@ async function routeAuthenticatedUser(user) {
       .eq("id", user.id)
       .single();
 
-
   if (error || !profile) {
-
-    console.error(
-      "Profile lookup failed:",
-      error
-    );
-
-
+    console.error("Profile lookup failed:", error);
     await supabase.auth.signOut();
-
-
     currentUser = null;
     currentRole = null;
-
-
     hide("auth-screen");
-
     show("role-selection-screen");
-
-
     return message(
       "auth-message",
-      "Your account profile is not authorized. Make sure a profile exists for this account.",
+      "Your account profile is not authorized or missing. Make sure a profile exists for this account.",
       "error"
     );
   }
-
-
-  currentRole =
-    profile.role;
-
-
+  currentRole = profile.role;
   hide("role-selection-screen");
   hide("auth-screen");
   hide("main-dashboard");
@@ -1621,504 +1140,172 @@ async function routeAuthenticatedUser(user) {
   hide("exam-workspace-screen");
   hide("lockout-screen");
 
-
-  if (
-    currentRole === "teacher/admin"
-  ) {
-
-    document.getElementById(
-      "teacher-name"
-    ).textContent =
-      profile.full_name ||
-      user.email;
-
-
+  if (currentRole === "teacher/admin") {
+    document.getElementById("teacher-name").textContent = profile.full_name || user.email;
     await openTeacherPortal();
-
   }
-
-
-  else if (
-    currentRole === "student"
-  ) {
-
-    document.getElementById(
-      "student-name"
-    ).textContent =
-      profile.full_name ||
-      user.email;
-
-
+  else if (currentRole === "student") {
+    document.getElementById("student-name").textContent = profile.full_name || user.email;
     await openStudentPortal();
-
   }
-
-
   else {
-
     await supabase.auth.signOut();
-
-
     currentUser = null;
     currentRole = null;
-
-
     hide("auth-screen");
-
     show("role-selection-screen");
-
-
-    alert(
-      "Unknown account role. Please contact the administrator."
-    );
+    alert("Unknown account role. Please contact the administrator.");
   }
 }
-
-
 /* ============================================================
    LOGOUT
    ============================================================ */
-
 async function logout() {
-
-  clearInterval(
-    globalTimingInterval
-  );
-
+  clearInterval(globalTimingInterval);
   isExamActive = false;
-
   currentMaterial = null;
   currentRole = null;
   currentUser = null;
   examDeadline = null;
-
-
   if (supabase) {
     await supabase.auth.signOut();
   }
-
-
   hide("main-dashboard");
   hide("teacher-portal");
   hide("exam-workspace-screen");
   hide("lockout-screen");
   hide("auth-screen");
-
-
   show("role-selection-screen");
 }
-
-
 /* ============================================================
    STUDENT PORTAL
    ============================================================ */
-
 async function openStudentPortal() {
-
   show("main-dashboard");
-
   hide("student-materials-section");
-
-
-  const box =
-    document.getElementById(
-      "student-subjects"
-    );
-
-
+  const box = document.getElementById("student-subjects");
   box.innerHTML = "";
-
-
   SUBJECTS.forEach(subject => {
-
-    const card =
-      document.createElement("div");
-
-
-    card.className =
-      "subject-card";
-
-
+    const card = document.createElement("div");
+    card.className = "subject-card";
     card.innerHTML = `
-
-      <h3>
-        ${escapeHtml(subject)}
-      </h3>
-
-      <p>
-        View exams and assignments.
-      </p>
-
-      <button>
-        Open Subject
-      </button>
-
+      <h3>${escapeHtml(subject)}</h3>
+      <p>View exams and assignments.</p>
+      <button>Open Subject</button>
     `;
-
-
-    card.querySelector("button")
-      .onclick =
-        () =>
-          openStudentSubject(subject);
-
-
+    card.querySelector("button").onclick = () => openStudentSubject(subject);
     box.appendChild(card);
-
   });
 }
-
-
 /* ============================================================
    CLOSE SUBJECT
    ============================================================ */
-
 function closeStudentSubject() {
-
-  hide(
-    "student-materials-section"
-  );
+  hide("student-materials-section");
 }
-
-
 /* ============================================================
    OPEN STUDENT SUBJECT
    ============================================================ */
-
 async function openStudentSubject(subject) {
-
-  document.getElementById(
-    "student-subject-title"
-  ).textContent =
-    subject;
-
-
-  show(
-    "student-materials-section"
-  );
-
-
-  const box =
-    document.getElementById(
-      "student-materials"
-    );
-
-
-  box.innerHTML =
-    "Loading...";
-
-
+  document.getElementById("student-subject-title").textContent = subject;
+  show("student-materials-section");
+  const box = document.getElementById("student-materials");
+  box.innerHTML = "Loading...";
   const {
     data,
     error
   } =
     await supabase
       .from("academic_materials")
-      .select(
-        "id,material_type,title,details,is_locked,created_at"
-      )
+      .select("id,material_type,title,details,is_locked,created_at")
       .eq("subject", subject)
-      .order(
-        "created_at",
-        {
-          ascending:false
-        }
-      );
-
+      .order("created_at", { ascending:false });
 
   if (error) {
-
-    box.textContent =
-      "Unable to load materials.";
-
+    box.textContent = "Unable to load materials.";
     return;
   }
-
-
   box.innerHTML = "";
-
-
   if (!data || data.length === 0) {
-
-    box.innerHTML =
-      '<div class="material-item">No materials available for this subject.</div>';
-
+    box.innerHTML = '<div class="material-item">No materials available for this subject.</div>';
     return;
   }
-
-
   data.forEach(m => {
-
-    const item =
-      document.createElement("div");
-
-
-    item.className =
-      "material-item";
-
-
-    const locked =
-      m.material_type === "exam" &&
-      m.is_locked;
-
-
+    const item = document.createElement("div");
+    item.className = "material-item";
+    const locked = (m.material_type === "exam" && m.is_locked);
     item.innerHTML = `
-
-      <h3>
-        ${escapeHtml(m.title)}
-      </h3>
-
-      <p>
-        ${escapeHtml(m.details || "")}
-      </p>
-
-      <div class="small">
-        ${escapeHtml(
-          String(m.material_type).toUpperCase()
-        )}
-      </div>
-
-      ${
-        m.material_type === "exam"
-
-        ? `
-
-          <span class="status ${
-            locked
-              ? "locked"
-              : "unlocked"
-          }">
-
-            ${
-              locked
-                ? "LOCKED"
-                : "UNLOCKED"
-            }
-
-          </span>
-
-        `
-
-        : `
-
-          <span class="status unlocked">
-            AVAILABLE
-          </span>
-
-        `
-      }
-
-
+      <h3>${escapeHtml(m.title)}</h3>
+      <p>${escapeHtml(m.details || "")}</p>
+      <div class="small">${escapeHtml(String(m.material_type).toUpperCase())}</div>
+      <span class="status ${locked ? "locked" : "unlocked"}">
+        ${locked ? "LOCKED" : (m.material_type === "exam" ? "UNLOCKED" : "AVAILABLE")}
+      </span>
       <div style="margin-top:10px">
-
-        <button
-          ${locked ? "disabled" : ""}>
-
-          ${
-            locked
-              ? "Locked"
-              : "Open"
-          }
-
-        </button>
-
+        <button ${locked ? "disabled" : ""}>${locked ? "Locked" : "Open"}</button>
       </div>
-
     `;
-
-
-    const button =
-      item.querySelector("button");
-
-
-    button.onclick =
-      () =>
-        openMaterial(m);
-
-
+    item.querySelector("button").onclick = () => openMaterial(m);
     box.appendChild(item);
-
   });
 }
-
-
 /* ============================================================
    OPEN MATERIAL
    ============================================================ */
-
 async function openMaterial(material) {
-
-  currentMaterial =
-    material;
-
-
+  currentMaterial = material;
   const {
     data:full,
     error
   } =
     await supabase
       .from("academic_materials")
-      .select(
-        "id,title,details,material_type,is_locked,duration_seconds,storage_path"
-      )
+      .select("id,title,details,material_type,is_locked,duration_seconds,storage_path")
       .eq("id", material.id)
       .single();
 
-
-  if (
-    error ||
-    !full
-  ) {
-
-    return showLockout(
-      "Unable to open this material."
-    );
+  if (error || !full) {
+    return showLockout("Unable to open this material.");
   }
-
-
-  if (
-    full.material_type === "exam" &&
-    full.is_locked
-  ) {
-
-    return showLockout(
-      "This exam is currently locked."
-    );
+  if (full.material_type === "exam" && full.is_locked) {
+    return showLockout("This exam is currently locked.");
   }
-
-
-  if (
-    full.material_type === "exam"
-  ) {
-
-    const started =
-      await supabase.rpc(
-        "start_my_exam",
-        {
-          p_material_id:
-            full.id
-        }
-      );
-
-
+  if (full.material_type === "exam") {
+    const started = await supabase.rpc("start_my_exam", { p_material_id: full.id });
     if (started.error) {
-
-      return showLockout(
-        started.error.message
-      );
+      return showLockout(started.error.message);
     }
-
-
-    examDeadline =
-      Date.now() +
-      (
-        (full.duration_seconds || 4500) *
-        1000
-      );
-
-
-    isExamActive =
-      true;
-
-
-    clearInterval(
-      globalTimingInterval
-    );
-
-
-    globalTimingInterval =
-      setInterval(
-        calculateTimeRemaining,
-        1000
-      );
-
-
+    examDeadline = Date.now() + ((full.duration_seconds || 4500) * 1000);
+    isExamActive = true;
+    clearInterval(globalTimingInterval);
+    globalTimingInterval = setInterval(calculateTimeRemaining, 1000);
     hide("main-dashboard");
-
     show("exam-workspace-screen");
-
-
-    document.getElementById(
-      "exam-title-header"
-    ).textContent =
-      full.title;
-
-
-    await renderMaterial(
-      full,
-      "questions-injection-box"
-    );
-
+    document.getElementById("exam-title-header").textContent = full.title;
+    await renderMaterial(full, "questions-injection-box");
   }
-
-
   else {
-
-    const section =
-      document.getElementById(
-        "student-materials-section"
-      );
-
-
-    const viewer =
-      document.createElement("div");
-
-
-    viewer.className =
-      "material-item";
-
-
+    const section = document.getElementById("student-materials-section");
+    const viewer = document.createElement("div");
+    viewer.className = "material-item";
     viewer.innerHTML = `
-
-      <h3>
-        ${escapeHtml(full.title)}
-      </h3>
-
-      <p>
-        ${escapeHtml(full.details || "")}
-      </p>
-
+      <h3>${escapeHtml(full.title)}</h3>
+      <p>${escapeHtml(full.details || "")}</p>
       <div id="assignment-file-view"></div>
-
     `;
-
-
     section.prepend(viewer);
-
-
-    await renderMaterial(
-      full,
-      "assignment-file-view"
-    );
+    await renderMaterial(full, "assignment-file-view");
   }
 }
-
-
 /* ============================================================
    RENDER MATERIAL
    ============================================================ */
-
-async function renderMaterial(
-  material,
-  targetId
-) {
-
-  const target =
-    document.getElementById(
-      targetId
-    );
-
-
-  target.innerHTML =
-    escapeHtml(
-      material.details || ""
-    );
-
-
+async function renderMaterial(material, targetId) {
+  const target = document.getElementById(targetId);
+  target.innerHTML = escapeHtml(material.details || "");
   if (!material.storage_path) {
     return;
   }
-
-
   const {
     data,
     error
@@ -2126,352 +1313,119 @@ async function renderMaterial(
     await supabase
       .storage
       .from("academic-materials")
-      .createSignedUrl(
-        material.storage_path,
-        3600
-      );
+      .createSignedUrl(material.storage_path, 3600);
 
-
-  if (
-    error ||
-    !data
-  ) {
-
-    target.innerHTML +=
-      "<p>File access is not currently authorized.</p>";
-
+  if (error || !data) {
+    target.innerHTML += "<p>File access is not currently authorized.</p>";
     return;
   }
-
-
-  const url =
-    data.signedUrl;
-
-
-  const lower =
-    material.storage_path
-      .toLowerCase();
-
-
-  if (
-    lower.endsWith(".pdf")
-  ) {
-
-    const iframe =
-      document.createElement("iframe");
-
-
-    iframe.src =
-      url;
-
-
-    iframe.style.width =
-      "100%";
-
-
-    iframe.style.height =
-      "650px";
-
-
-    iframe.style.border =
-      "none";
-
-
-    target.appendChild(
-      iframe
-    );
-
+  const url = data.signedUrl;
+  const lower = material.storage_path.toLowerCase();
+  if (lower.endsWith(".pdf")) {
+    const iframe = document.createElement("iframe");
+    iframe.src = url;
+    iframe.style.width = "100%";
+    iframe.style.height = "650px";
+    iframe.style.border = "none";
+    target.appendChild(iframe);
   }
-
   else {
-
-    const p =
-      document.createElement("p");
-
-
-    const link =
-      document.createElement("a");
-
-
-    link.href =
-      url;
-
-
-    link.target =
-      "_blank";
-
-
-    link.rel =
-      "noopener";
-
-
-    link.textContent =
-      "Open uploaded material";
-
-
-    p.appendChild(
-      link
-    );
-
-
-    target.appendChild(
-      p
-    );
+    const p = document.createElement("p");
+    const link = document.createElement("a");
+    link.href = url;
+    link.target = "_blank";
+    link.rel = "noopener";
+    link.textContent = "Open uploaded material";
+    p.appendChild(link);
+    target.appendChild(p);
   }
 }
-
-
 /* ============================================================
    EXAM TIMER
    ============================================================ */
-
 function calculateTimeRemaining() {
-
-  if (
-    !isExamActive ||
-    !examDeadline
-  ) {
+  if (!isExamActive || !examDeadline) {
     return;
   }
-
-
-  const remaining =
-    Math.round(
-      (
-        examDeadline -
-        Date.now()
-      ) / 1000
-    );
-
-
+  const remaining = Math.round((examDeadline - Date.now()) / 1000);
   if (remaining <= 0) {
-
-    handleViolationLockout(
-      "Time expired."
-    );
-
+    handleViolationLockout("Time expired.");
     return;
   }
-
-
-  const mins =
-    Math.floor(
-      remaining / 60
-    );
-
-
-  const secs =
-    remaining % 60;
-
-
-  document.getElementById(
-    "time-display"
-  ).textContent =
-    `${mins}:${String(secs).padStart(2,"0")}`;
+  const mins = Math.floor(remaining / 60);
+  const secs = remaining % 60;
+  document.getElementById("time-display").textContent = `${mins}:${String(secs).padStart(2,"0")}`;
 }
-
-
 /* ============================================================
    EXAM LOCKOUT
    ============================================================ */
-
-async function handleViolationLockout(
-  reason =
-    "Exam attempt locked."
-) {
-
+async function handleViolationLockout(reason = "Exam attempt locked.") {
   if (!currentMaterial) {
     return;
   }
-
-
-  isExamActive =
-    false;
-
-
-  clearInterval(
-    globalTimingInterval
-  );
-
-
+  isExamActive = false;
+  clearInterval(globalTimingInterval);
   if (supabase) {
-
-    await supabase.rpc(
-      "lock_my_exam",
-      {
-        p_material_id:
-          currentMaterial.id,
-
-        p_reason:
-          reason
-      }
-    );
+    await supabase.rpc("lock_my_exam", {
+      p_material_id: currentMaterial.id,
+      p_reason: reason
+    });
   }
-
-
-  showLockout(
-    reason
-  );
+  showLockout(reason);
 }
-
-
 /* ============================================================
    MANUAL FINISH
    ============================================================ */
-
 async function triggerManualFinish() {
-
-  await handleViolationLockout(
-    "Exam finished and submitted."
-  );
+  await handleViolationLockout("Exam finished and submitted.");
 }
-
-
 /* ============================================================
    SHOW LOCKOUT
    ============================================================ */
-
 function showLockout(text) {
-
-  document.getElementById(
-    "lockout-paragraph"
-  ).textContent =
-    text;
-
-
+  document.getElementById("lockout-paragraph").textContent = text;
   hide("main-dashboard");
-
   hide("exam-workspace-screen");
-
   show("lockout-screen");
 }
-
-
 /* ============================================================
    RETURN TO STUDENT PORTAL
    ============================================================ */
-
 function returnToStudentPortal() {
-
   hide("lockout-screen");
-
-  isExamActive =
-    false;
-
-
-  clearInterval(
-    globalTimingInterval
-  );
-
-
+  isExamActive = false;
+  clearInterval(globalTimingInterval);
   openStudentPortal();
 }
-
-
 /* ============================================================
    TEACHER PORTAL
    ============================================================ */
-
 async function openTeacherPortal() {
-
   show("teacher-portal");
-
-
-  const select =
-    document.getElementById(
-      "material-subject"
-    );
-
-
-  select.innerHTML =
-    SUBJECTS
-      .map(
-        s =>
-          `<option value="${escapeHtml(s)}">
-            ${escapeHtml(s)}
-          </option>`
-      )
-      .join("");
-
-
+  const select = document.getElementById("material-subject");
+  select.innerHTML = SUBJECTS.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join("");
   await loadArchive();
 }
-
-
 /* ============================================================
    UPLOAD MATERIAL
    ============================================================ */
-
 async function uploadMaterial() {
-
   if (!supabase) {
-
-    return message(
-      "admin-message",
-      "Authentication service is not ready.",
-      "error"
-    );
+    return message("admin-message", "Authentication service is not ready.", "error");
   }
-
-
-  const type =
-    document.getElementById(
-      "material-type"
-    ).value;
-
-
-  const subject =
-    document.getElementById(
-      "material-subject"
-    ).value;
-
-
-  const title =
-    document.getElementById(
-      "material-title"
-    ).value.trim();
-
-
-  const details =
-    document.getElementById(
-      "material-details"
-    ).value.trim();
-
-
-  const unlockCode =
-    document.getElementById(
-      "material-unlock-code"
-    ).value;
-
-
-  const file =
-    document.getElementById(
-      "material-file"
-    ).files[0];
-
+  const type = document.getElementById("material-type").value;
+  const subject = document.getElementById("material-subject").value;
+  const title = document.getElementById("material-title").value.trim();
+  const details = document.getElementById("material-details").value.trim();
+  const unlockCode = document.getElementById("material-unlock-code").value;
+  const file = document.getElementById("material-file").files[0];
 
   if (!title) {
-
-    return message(
-      "admin-message",
-      "Title is required.",
-      "error"
-    );
+    return message("admin-message", "Title is required.", "error");
   }
-
-
-  if (
-    type === "exam" &&
-    !unlockCode
-  ) {
-
-    return message(
-      "admin-message",
-      "An unlock code is required for an exam.",
-      "error"
-    );
+  if (type === "exam" && !unlockCode) {
+    return message("admin-message", "An unlock code is required for an exam.", "error");
   }
-
 
   const {
     data:material,
@@ -2480,153 +1434,47 @@ async function uploadMaterial() {
     await supabase
       .from("academic_materials")
       .insert({
-
         subject,
-
         title,
-
         details,
-
-        material_type:
-          type,
-
-        unlock_code:
-          type === "exam"
-            ? unlockCode
-            : null
-
+        material_type: type,
+        unlock_code: type === "exam" ? unlockCode : null
       })
       .select()
       .single();
 
-
   if (error) {
-
-    return message(
-      "admin-message",
-      error.message,
-      "error"
-    );
+    return message("admin-message", error.message, "error");
   }
-
-
   if (file) {
-
-    const path =
-      `materials/${material.id}/${file.name.replace(
-        /[^a-zA-Z0-9._-]/g,
-        "_"
-      )}`;
-
-
-    const up =
-      await supabase
-        .storage
-        .from("academic-materials")
-        .upload(
-          path,
-          file,
-          {
-            upsert:false
-          }
-        );
-
-
+    const path = `materials/${material.id}/${file.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
+    const up = await supabase.storage.from("academic-materials").upload(path, file, { upsert:false });
     if (up.error) {
-
-      await supabase
-        .from("academic_materials")
-        .delete()
-        .eq(
-          "id",
-          material.id
-        );
-
-
-      return message(
-        "admin-message",
-        up.error.message,
-        "error"
-      );
+      await supabase.from("academic_materials").delete().eq("id", material.id);
+      return message("admin-message", up.error.message, "error");
     }
-
-
-    const saved =
-      await supabase
-        .from("academic_materials")
-        .update({
-          storage_path:path
-        })
-        .eq(
-          "id",
-          material.id
-        );
-
-
+    const saved = await supabase.from("academic_materials").update({ storage_path:path }).eq("id", material.id);
     if (saved.error) {
-
-      return message(
-        "admin-message",
-        saved.error.message,
-        "error"
-      );
+      return message("admin-message", saved.error.message, "error");
     }
   }
-
-
   message(
     "admin-message",
-
-    `${
-      type === "exam"
-        ? "Exam uploaded and automatically LOCKED."
-        : "Assignment uploaded and stored permanently."
-    }`,
-
+    type === "exam" ? "Exam uploaded and automatically LOCKED." : "Assignment uploaded and stored permanently.",
     "success"
   );
-
-
-  document.getElementById(
-    "material-title"
-  ).value = "";
-
-
-  document.getElementById(
-    "material-details"
-  ).value = "";
-
-
-  document.getElementById(
-    "material-unlock-code"
-  ).value = "";
-
-
-  document.getElementById(
-    "material-file"
-  ).value = "";
-
-
+  document.getElementById("material-title").value = "";
+  document.getElementById("material-details").value = "";
+  document.getElementById("material-unlock-code").value = "";
+  document.getElementById("material-file").value = "";
   await loadArchive();
 }
-
-
 /* ============================================================
    LOAD TEACHER ARCHIVE
    ============================================================ */
-
 async function loadArchive() {
-
-  const box =
-    document.getElementById(
-      "admin-archive"
-    );
-
-
-  box.innerHTML =
-    "Loading archive...";
-
-
+  const box = document.getElementById("admin-archive");
+  box.innerHTML = "Loading archive...";
   const {
     data,
     error
@@ -2634,488 +1482,138 @@ async function loadArchive() {
     await supabase
       .from("academic_materials")
       .select("*")
-      .order(
-        "created_at",
-        {
-          ascending:false
-        }
-      );
-
+      .order("created_at", { ascending:false });
 
   if (error) {
-
-    box.textContent =
-      "Archive unavailable.";
-
+    box.textContent = "Archive unavailable.";
     return;
   }
-
-
   box.innerHTML = "";
-
-
-  if (
-    !data ||
-    data.length === 0
-  ) {
-
-    box.innerHTML =
-      '<div class="material-item">No academic materials have been uploaded yet.</div>';
-
+  if (!data || data.length === 0) {
+    box.innerHTML = '<div class="material-item">No academic materials have been uploaded yet.</div>';
     return;
   }
-
-
   data.forEach(m => {
-
-    const item =
-      document.createElement("div");
-
-
-    item.className =
-      "material-item";
-
-
+    const item = document.createElement("div");
+    item.className = "material-item";
     item.innerHTML = `
-
-      <h3>
-
-        ${escapeHtml(m.subject)}
-
-        —
-
-        ${escapeHtml(m.title)}
-
-      </h3>
-
-
-      <p>
-        ${escapeHtml(m.details || "")}
-      </p>
-
-
+      <h3>${escapeHtml(m.subject)} — ${escapeHtml(m.title)}</h3>
+      <p>${escapeHtml(m.details || "")}</p>
       <p class="small">
-
-        ${escapeHtml(
-          String(m.material_type).toUpperCase()
-        )}
-
-        •
-
-        ${
-          m.material_type === "exam"
-
-            ? (
-                m.is_locked
-                  ? "LOCKED"
-                  : "UNLOCKED"
-              )
-
-            : "AVAILABLE"
-        }
-
+        ${escapeHtml(String(m.material_type).toUpperCase())} • 
+        ${m.material_type === "exam" ? (m.is_locked ? "LOCKED" : "UNLOCKED") : "AVAILABLE"}
       </p>
-
-
       <div class="toolbar">
-
-        ${
-          m.material_type === "exam" &&
-          m.is_locked
-
-            ? `
-
-              <input
-                id="code-${m.id}"
-                placeholder="Unlock code">
-
-              <button
-                class="success">
-
-                Unlock
-
-              </button>
-
-            `
-
-            : ""
-        }
-
-
-        <button
-          class="danger">
-
-          Delete
-
-        </button>
-
+        ${m.material_type === "exam" && m.is_locked ? `
+          <input id="code-${m.id}" placeholder="Unlock code">
+          <button class="success">Unlock</button>
+        ` : ""}
+        <button class="danger">Delete</button>
       </div>
-
     `;
-
-
-    const buttons =
-      item.querySelectorAll(
-        "button"
-      );
-
-
-    if (
-      m.material_type === "exam" &&
-      m.is_locked
-    ) {
-
-      buttons[0].onclick =
-        () =>
-          unlockExam(
-            m.id,
-
-            document.getElementById(
-              `code-${m.id}`
-            ).value
-          );
+    const buttons = item.querySelectorAll("button");
+    if (m.material_type === "exam" && m.is_locked) {
+      buttons[0].onclick = () => unlockExam(m.id, document.getElementById(`code-${m.id}`).value);
     }
-
-
-    buttons[
-      buttons.length - 1
-    ].onclick =
-      () =>
-        deleteMaterial(m);
-
-
-    box.appendChild(
-      item
-    );
-
+    buttons[buttons.length - 1].onclick = () => deleteMaterial(m);
+    box.appendChild(item);
   });
 }
-
-
 /* ============================================================
    UNLOCK EXAM
    ============================================================ */
-
-async function unlockExam(
-  id,
-  code
-) {
-
-  const {
-    error
-  } =
-    await supabase.rpc(
-      "teacher_unlock_exam",
-      {
-        p_material_id:id,
-        p_unlock_code:code
-      }
-    );
-
-
+async function unlockExam(id, code) {
+  const { error } = await supabase.rpc("teacher_unlock_exam", {
+    p_material_id: id,
+    p_unlock_code: code
+  });
   if (error) {
-
-    return message(
-      "admin-message",
-      error.message,
-      "error"
-    );
+    return message("admin-message", error.message, "error");
   }
-
-
-  message(
-    "admin-message",
-    "Exam unlocked permanently.",
-    "success"
-  );
-
-
+  message("admin-message", "Exam unlocked permanently.", "success");
   await loadArchive();
 }
-
-
 /* ============================================================
    DELETE MATERIAL
    ============================================================ */
-
 async function deleteMaterial(m) {
-
-  if (
-    !confirm(
-      "Delete this academic material?"
-    )
-  ) {
+  if (!confirm("Delete this academic material?")) {
     return;
   }
-
-
   if (m.storage_path) {
-
-    await supabase
-      .storage
-      .from("academic-materials")
-      .remove([
-        m.storage_path
-      ]);
+    await supabase.storage.from("academic-materials").remove([m.storage_path]);
   }
-
-
-  const {
-    error
-  } =
-    await supabase
-      .from("academic_materials")
-      .delete()
-      .eq(
-        "id",
-        m.id
-      );
-
-
+  const { error } = await supabase.from("academic_materials").delete().eq("id", m.id);
   if (error) {
-
-    return message(
-      "admin-message",
-      error.message,
-      "error"
-    );
+    return message("admin-message", error.message, "error");
   }
-
-
   await loadArchive();
 }
-
-
 /* ============================================================
    HTML ESCAPING
    ============================================================ */
-
 function escapeHtml(v) {
-
-  const d =
-    document.createElement(
-      "div"
-    );
-
-
-  d.textContent =
-    v ?? "";
-
-
+  const d = document.createElement("div");
+  d.textContent = v ?? "";
   return d.innerHTML;
 }
-
-
 /* ============================================================
    VISIBILITY / EXAM PROTECTION
    ============================================================ */
-
-window.addEventListener(
-  "blur",
-  () => {
-
-    if (isExamActive) {
-
-      handleViolationLockout(
-        "Exam attempt locked after leaving the active window."
-      );
-    }
-
+window.addEventListener("blur", () => {
+  if (isExamActive) {
+    handleViolationLockout("Exam attempt locked after leaving the active window.");
   }
-);
-
-
-document.addEventListener(
-  "visibilitychange",
-  () => {
-
-    if (
-      document.hidden &&
-      isExamActive
-    ) {
-
-      handleViolationLockout(
-        "Exam attempt locked after changing tabs."
-      );
-    }
-
+});
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden && isExamActive) {
+    handleViolationLockout("Exam attempt locked after changing tabs.");
   }
-);
-
-
+});
 /* ============================================================
    START APPLICATION
    ============================================================ */
+window.addEventListener("DOMContentLoaded", () => {
+  const splash = document.getElementById("splash-screen");
+  setTimeout(() => {
+    splash.classList.add("fade-out");
+    setTimeout(() => { hide("splash-screen"); }, 450);
+  }, 1800);
 
-window.addEventListener(
-  "DOMContentLoaded",
-  () => {
+  const initialized = initializeSupabase();
+  if (!initialized) {
+    setTimeout(() => { show("role-selection-screen"); }, 1900);
+    return;
+  }
 
-    /*
-     * Splash is completely independent from Supabase.
-     * It can NEVER permanently block the application.
-     */
-
-    const splash =
-      document.getElementById(
-        "splash-screen"
-      );
-
-
-    setTimeout(
-      () => {
-
-        splash.classList.add(
-          "fade-out"
-        );
-
-
-        setTimeout(
-          () => {
-
-            hide("splash-screen");
-
-          },
-          450
-        );
-
-
-      },
-      1800
-    );
-
-
-    /*
-     * Initialize Supabase immediately.
-     */
-
-    const initialized =
-      initializeSupabase();
-
-
-    if (!initialized) {
-
-      setTimeout(
-        () => {
-
-          show(
-            "role-selection-screen"
-          );
-
-        },
-        1900
-      );
-
+  supabase.auth.onAuthStateChange(async (event, session) => {
+    if (event === "SIGNED_OUT") {
       return;
     }
+    if (session?.user && !currentUser) {
+      await routeAuthenticatedUser(session.user);
+    }
+  });
 
-
-    /*
-     * Listen for authentication changes.
-     */
-
-    supabase.auth.onAuthStateChange(
-      async (
-        event,
-        session
-      ) => {
-
-        if (
-          event === "SIGNED_OUT"
-        ) {
-
-          return;
-        }
-
-
-        if (
-          session?.user &&
-          !currentUser
-        ) {
-
-          await routeAuthenticatedUser(
-            session.user
-          );
-        }
-
+  setTimeout(async () => {
+    try {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      if (error) {
+        console.error("Session error:", error);
+        show("role-selection-screen");
+        return;
       }
-    );
-
-
-    /*
-     * Restore an existing session.
-     */
-
-    setTimeout(
-      async () => {
-
-        try {
-
-          const {
-            data:{
-              session
-            },
-            error
-          } =
-            await supabase.auth.getSession();
-
-
-          if (error) {
-
-            console.error(
-              "Session error:",
-              error
-            );
-
-
-            show(
-              "role-selection-screen"
-            );
-
-            return;
-          }
-
-
-          if (
-            session?.user
-          ) {
-
-            await routeAuthenticatedUser(
-              session.user
-            );
-
-          }
-
-          else {
-
-            show(
-              "role-selection-screen"
-            );
-          }
-
-        }
-
-        catch(error) {
-
-          console.error(
-            "Application startup error:",
-            error
-          );
-
-
-          show(
-            "role-selection-screen"
-          );
-        }
-
-      },
-      1900
-    );
-
-  }
-);
-
+      if (session?.user) {
+        await routeAuthenticatedUser(session.user);
+      } else {
+        show("role-selection-screen");
+      }
+    } catch(error) {
+      console.error("Application startup error:", error);
+      show("role-selection-screen");
+    }
+  }, 1900);
+});
 </script>
-
 </body>
 </html>
