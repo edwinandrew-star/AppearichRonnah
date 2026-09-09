@@ -2928,20 +2928,27 @@ window.addEventListener(
     setTimeout(
       () => {
 
+        // Always reveal the role screen before removing the splash.
+        // This prevents a blank/white screen if Supabase takes time to respond.
+        if (!currentUser) {
+          show("role-selection-screen");
+          hide("auth-screen");
+          hide("main-dashboard");
+          hide("teacher-portal");
+          hide("exam-workspace-screen");
+          hide("lockout-screen");
+        }
+
         splash.classList.add(
           "fade-out"
         );
 
-
         setTimeout(
           () => {
-
             hide("splash-screen");
-
           },
           450
         );
-
 
       },
       1800
