@@ -386,6 +386,9 @@ let activeQuestionIdx = 0;
 let studentAnswers = {};
 let examTimerInterval = null;
 let examEndTime = null;
+let currentAttemptId = null;
+let autosaveTimeout = null;
+let autosaveInterval = null;
 
 /* INITIALIZATION */
 window.addEventListener("DOMContentLoaded", () => {
@@ -403,6 +406,24 @@ window.addEventListener("DOMContentLoaded", () => {
 
   populateSubjects();
   initSessionCheck();
+
+  // Keep the UI in sync with the real auth state at all times, so an
+  // expired/invalidated session (e.g. token refresh failure, sign-out in
+  // another tab) never leaves the app stuck showing a dashboard the user
+  // is no longer authenticated for.
+  if (supabase) {
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT') {
+        currentUser = null;
+        currentRole = null;
+        showRoleSelection();
+      } else if (event === 'TOKEN_REFRESH_FAILED') {
+        currentUser = null;
+        currentRole = null;
+        showRoleSelection();
+      }
+    });
+  }
 });
 
 async function initSessionCheck() {
@@ -488,25 +509,48 @@ async function routeUser(user) {
   isRouting = true;
   currentUser = user;
 
-  let { data: profile } = await supabase.from("profiles").select("role, full_name").eq("id", user.id).maybeSingle();
-  let role = profile?.role || user.user_metadata?.role || targetRole;
-  currentRole = role;
+  try {
+    let { data: profile } = await supabase.from("profiles").select("role, full_name").eq("id", user.id).maybeSingle();
 
-  hideAllScreens();
-  if (role === 'teacher' || role === 'admin') {
-    document.getElementById("teacher-name").textContent = profile?.full_name || user.email;
-    document.getElementById("teacher-portal").classList.remove("hidden");
-    loadTeacherExams();
-  } else {
-    document.getElementById("student-name").textContent = profile?.full_name || user.email;
-    document.getElementById("student-portal").classList.remove("hidden");
-    loadStudentExams();
+    // A profile row should always exist for an authenticated user. If it's
+    // missing (e.g. account created before this logic existed, or an earlier
+    // profile write failed), create it now instead of silently falling back
+    // to a guessed role - this is the root cause of "signs in fine but lands
+    // on the wrong dashboard / seems stuck" reports.
+    if (!profile) {
+      const fallbackRole = user.user_metadata?.role || targetRole || 'student';
+      await ensureProfile(user, fallbackRole);
+      const retry = await supabase.from("profiles").select("role, full_name").eq("id", user.id).maybeSingle();
+      profile = retry.data;
+    }
+
+    const role = profile?.role || user.user_metadata?.role || targetRole || 'student';
+    currentRole = role;
+
+    hideAllScreens();
+    if (role === 'teacher' || role === 'admin') {
+      document.getElementById("teacher-name").textContent = profile?.full_name || user.email;
+      document.getElementById("teacher-portal").classList.remove("hidden");
+      loadTeacherExams();
+    } else {
+      document.getElementById("student-name").textContent = profile?.full_name || user.email;
+      document.getElementById("student-portal").classList.remove("hidden");
+      loadStudentExams();
+    }
+  } catch (e) {
+    console.error("Routing error:", e);
+    showRoleSelection();
+    alert("We couldn't load your account right now. Please sign in again.");
+  } finally {
+    isRouting = false;
   }
-  isRouting = false;
 }
 
 async function logout() {
   clearInterval(examTimerInterval);
+  clearInterval(autosaveInterval);
+  clearTimeout(autosaveTimeout);
+  currentAttemptId = null;
   if (supabase) await supabase.auth.signOut();
   currentUser = null;
   currentRole = null;
@@ -615,7 +659,10 @@ function renderBuilderQuestions() {
       <div class="topbar">
         <b>Q${idx + 1}. [${q.question_type.toUpperCase()}] (${q.marks} Marks)</b>
         <div>
-          <button class="secondary" onclick="deleteBuilderQuestion(${idx})">Remove</button>
+          <button class="secondary" onclick="moveBuilderQuestion(${idx}, -1)" ${idx === 0 ? 'disabled' : ''} title="Move up">↑</button>
+          <button class="secondary" onclick="moveBuilderQuestion(${idx}, 1)" ${idx === currentQuestions.length - 1 ? 'disabled' : ''} title="Move down">↓</button>
+          <button class="secondary" onclick="editBuilderQuestion(${idx})">Edit</button>
+          <button class="danger" onclick="deleteBuilderQuestion(${idx})">Remove</button>
         </div>
       </div>
       <p style="margin:5px 0;">${escapeHtml(q.question_text)}</p>
@@ -623,6 +670,42 @@ function renderBuilderQuestions() {
       <p class="small" style="color:var(--success-green)">Correct Answer: ${escapeHtml(q.correct_answer || 'Manual Grading Required')}</p>
     </div>
   `).join("");
+}
+
+function moveBuilderQuestion(idx, dir) {
+  const target = idx + dir;
+  if (target < 0 || target >= currentQuestions.length) return;
+  const [item] = currentQuestions.splice(idx, 1);
+  currentQuestions.splice(target, 0, item);
+  renderBuilderQuestions();
+}
+
+function editBuilderQuestion(idx) {
+  const q = currentQuestions[idx];
+  const text = prompt("Edit Question Text:", q.question_text);
+  if (text === null) return;
+
+  const marks = parseInt(prompt("Edit Question Marks:", q.marks) || q.marks);
+
+  let options = q.options;
+  let correct = q.correct_answer;
+
+  if (q.question_type === 'mcq') {
+    const opts = q.options || ["", "", "", ""];
+    const optA = prompt("Option A:", opts[0] || "");
+    const optB = prompt("Option B:", opts[1] || "");
+    const optC = prompt("Option C:", opts[2] || "");
+    const optD = prompt("Option D:", opts[3] || "");
+    options = [optA, optB, optC, optD];
+    correct = prompt("Enter Correct Option exactly as written above:", q.correct_answer || "");
+  } else if (q.question_type === 'tf') {
+    correct = prompt("Enter Correct Answer (True or False):", q.correct_answer || "True");
+  } else {
+    correct = prompt("Model Answer (Optional reference for teacher grading):", q.correct_answer || "");
+  }
+
+  currentQuestions[idx] = { ...q, question_text: text, marks, options, correct_answer: correct };
+  renderBuilderQuestions();
 }
 
 function addQuestionPrompt() {
@@ -697,7 +780,7 @@ async function saveExam(status) {
   if (examId) {
     await supabase.from("exams").update({
       title, subject, class_name: className, duration_minutes: duration, description, total_marks: totalMarks, status
-    }).eq("id", examId);
+    }).eq("id", examId).eq("teacher_id", currentUser.id);
   } else {
     const { data } = await supabase.from("exams").insert({
       teacher_id: currentUser.id, title, subject, class_name: className, duration_minutes: duration, description, total_marks: totalMarks, status
@@ -726,14 +809,25 @@ async function saveExam(status) {
   loadTeacherExams();
 }
 
+async function editExam(examId) {
+  // Ownership check: a teacher can only ever load their own exam into the builder.
+  const { data: exam, error } = await supabase.from("exams").select("*")
+    .eq("id", examId).eq("teacher_id", currentUser.id).maybeSingle();
+  if (error || !exam) {
+    alert("Could not load this exam (it may not exist or you may not own it).");
+    return;
+  }
+  openExamBuilder(exam);
+}
+
 async function quickPublish(examId) {
-  await supabase.from("exams").update({ status: 'published' }).eq("id", examId);
+  await supabase.from("exams").update({ status: 'published' }).eq("id", examId).eq("teacher_id", currentUser.id);
   loadTeacherExams();
 }
 
 async function deleteExam(examId) {
   if (!confirm("Are you sure you want to delete this exam?")) return;
-  await supabase.from("exams").delete().eq("id", examId);
+  await supabase.from("exams").delete().eq("id", examId).eq("teacher_id", currentUser.id);
   loadTeacherExams();
 }
 
@@ -786,16 +880,52 @@ async function loadTeacherExamResults() {
 }
 
 async function reviewAttempt(attemptId) {
-  const feedback = prompt("Enter final feedback/remarks for student:");
+  const { data: attempt } = await supabase.from("attempts").select("*, exams(total_marks)").eq("id", attemptId).single();
+  if (!attempt) return alert("Could not load this attempt.");
+
+  const { data: questions } = await supabase.from("questions").select("*").eq("exam_id", attempt.exam_id).order("sort_order", { ascending: true });
+  const answers = attempt.answers || {};
+
+  let autoScore = 0;
+  let manualScore = 0;
+
+  for (const q of (questions || [])) {
+    const ans = answers[q.id];
+    if (q.question_type === 'mcq' || q.question_type === 'tf') {
+      const correct = ans && ans.trim().toLowerCase() === (q.correct_answer || '').trim().toLowerCase();
+      if (correct) autoScore += q.marks;
+      // Shown for context only, not editable - these are auto-graded.
+      continue;
+    }
+
+    // Manual grading: short / long answer.
+    const summary = `Question (${q.marks} marks):\n${q.question_text}\n\nStudent's answer:\n${ans || '(no answer given)'}` +
+      (q.correct_answer ? `\n\nModel answer (reference):\n${q.correct_answer}` : '');
+    const marksInput = prompt(`${summary}\n\nEnter marks awarded (0-${q.marks}):`, "0");
+    if (marksInput === null) return; // teacher cancelled review entirely
+    let awarded = parseFloat(marksInput);
+    if (isNaN(awarded)) awarded = 0;
+    awarded = Math.max(0, Math.min(q.marks, awarded));
+    manualScore += awarded;
+  }
+
+  const totalMarks = attempt.exams?.total_marks || 1;
+  const finalScore = autoScore + manualScore;
+  const percentage = Math.round((finalScore / totalMarks) * 100);
+
+  const feedback = prompt("Enter final feedback/remarks for student (optional):", "");
   if (feedback === null) return;
-  
+
+  await supabase.from("attempts").update({ score: finalScore, percentage }).eq("id", attemptId);
+
   await supabase.from("results").upsert({
     attempt_id: attemptId,
     feedback: feedback,
     is_released: true
   }, { onConflict: 'attempt_id' });
 
-  alert("Results and feedback released to student!");
+  alert(`Final score: ${finalScore} / ${totalMarks} (${percentage}%)\nResults and feedback released to student!`);
+  loadTeacherExamResults();
 }
 
 /* STUDENT PORTAL & ATTEMPTS */
@@ -818,15 +948,35 @@ async function loadStudentExams() {
     return;
   }
 
-  box.innerHTML = data.map(e => `
+  // Check for any attempts this student already has against these exams,
+  // so we can offer Resume / show Already Submitted instead of always
+  // starting a brand new attempt (which would otherwise be possible by
+  // just clicking the button again).
+  const { data: attempts } = await supabase.from("attempts")
+    .select("exam_id, status").eq("student_id", currentUser.id);
+  const attemptByExam = {};
+  (attempts || []).forEach(a => { attemptByExam[a.exam_id] = a.status; });
+
+  box.innerHTML = data.map(e => {
+    const status = attemptByExam[e.id];
+    let actionHtml;
+    if (status === 'submitted') {
+      actionHtml = `<button disabled style="margin-top:10px; width:100%;">Already Submitted</button>`;
+    } else if (status === 'in_progress') {
+      actionHtml = `<button onclick="startExamAttempt('${e.id}')" class="success" style="margin-top:10px; width:100%;">Resume Exam</button>`;
+    } else {
+      actionHtml = `<button onclick="startExamAttempt('${e.id}')" style="margin-top:10px; width:100%;">Attempt Exam</button>`;
+    }
+    return `
     <div class="card">
       <h3>${escapeHtml(e.title)}</h3>
       <p><b>Subject:</b> ${e.subject} | <b>Duration:</b> ${e.duration_minutes} Mins</p>
       <p><b>Total Marks:</b> ${e.total_marks}</p>
       <p style="color:var(--muted); font-size:0.9rem;">${escapeHtml(e.description || '')}</p>
-      <button onclick="startExamAttempt('${e.id}')" style="margin-top:10px; width:100%;">Attempt Exam</button>
+      ${actionHtml}
     </div>
-  `).join("");
+  `;
+  }).join("");
 }
 
 async function startExamAttempt(examId) {
@@ -835,24 +985,77 @@ async function startExamAttempt(examId) {
 
   if (!exam || !questions || questions.length === 0) return alert("Failed to load exam questions.");
 
+  // Look for an existing attempt so refreshing, disconnecting, or closing
+  // the tab and coming back never loses a student's progress or restarts
+  // their timer.
+  const { data: existing } = await supabase.from("attempts")
+    .select("*").eq("exam_id", examId).eq("student_id", currentUser.id).maybeSingle();
+
+  if (existing && existing.status === 'submitted') {
+    alert("You have already submitted this exam.");
+    return;
+  }
+
   currentExam = exam;
   currentQuestions = questions;
   activeQuestionIdx = 0;
-  studentAnswers = {};
+
+  const durationMs = exam.duration_minutes * 60 * 1000;
+
+  if (existing && existing.status === 'in_progress') {
+    currentAttemptId = existing.id;
+    studentAnswers = existing.answers || {};
+    const startedAtMs = existing.started_at ? new Date(existing.started_at).getTime() : Date.now();
+    examEndTime = startedAtMs + durationMs;
+  } else {
+    studentAnswers = {};
+    const startedAt = new Date().toISOString();
+    const { data: created, error } = await supabase.from("attempts").insert({
+      exam_id: examId,
+      student_id: currentUser.id,
+      answers: {},
+      status: 'in_progress',
+      started_at: startedAt
+    }).select().single();
+    if (error || !created) {
+      alert("Could not start the exam attempt. Please try again.");
+      return;
+    }
+    currentAttemptId = created.id;
+    examEndTime = new Date(startedAt).getTime() + durationMs;
+  }
+
+  // If the timer has already lapsed (e.g. student was away past the exam
+  // duration), submit immediately instead of opening the exam screen.
+  if (examEndTime <= Date.now()) {
+    hideAllScreens();
+    await submitExamProcess();
+    return;
+  }
 
   hideAllScreens();
   document.getElementById("exam-attempt-screen").classList.remove("hidden");
   document.getElementById("attempt-exam-title").textContent = exam.title;
   document.getElementById("attempt-exam-meta").textContent = `Subject: ${exam.subject} | Total Questions: ${questions.length}`;
 
-  // Start Timer
-  const durationMs = exam.duration_minutes * 60 * 1000;
-  examEndTime = Date.now() + durationMs;
   clearInterval(examTimerInterval);
   examTimerInterval = setInterval(updateExamTimer, 1000);
 
+  clearInterval(autosaveInterval);
+  autosaveInterval = setInterval(persistAnswers, 8000);
+
   renderPalette();
   renderQuestion(0);
+}
+
+async function persistAnswers() {
+  if (!currentAttemptId) return;
+  try {
+    await supabase.from("attempts").update({ answers: studentAnswers })
+      .eq("id", currentAttemptId).eq("status", "in_progress");
+  } catch (e) {
+    console.error("Autosave failed:", e);
+  }
 }
 
 function updateExamTimer() {
@@ -913,6 +1116,8 @@ function renderQuestion(idx) {
 function saveAnswer(qId, val) {
   studentAnswers[qId] = val;
   renderPalette();
+  clearTimeout(autosaveTimeout);
+  autosaveTimeout = setTimeout(persistAnswers, 1500);
 }
 
 function navigateQuestion(dir) {
@@ -934,8 +1139,11 @@ function confirmSubmitExam() {
 
 async function submitExamProcess() {
   clearInterval(examTimerInterval);
+  clearInterval(autosaveInterval);
+  clearTimeout(autosaveTimeout);
 
   let score = 0;
+  const needsManualGrading = currentQuestions.some(q => q.question_type === 'short' || q.question_type === 'long');
   currentQuestions.forEach(q => {
     const ans = studentAnswers[q.id];
     if (q.question_type === 'mcq' || q.question_type === 'tf') {
@@ -948,18 +1156,32 @@ async function submitExamProcess() {
   const totalMarks = currentExam.total_marks || 1;
   const percentage = Math.round((score / totalMarks) * 100);
 
-  await supabase.from("attempts").insert({
-    exam_id: currentExam.id,
-    student_id: currentUser.id,
-    answers: studentAnswers,
-    score,
-    percentage,
-    status: 'submitted',
-    submitted_at: new Date().toISOString()
-  });
+  if (currentAttemptId) {
+    await supabase.from("attempts").update({
+      answers: studentAnswers,
+      score,
+      percentage,
+      status: 'submitted',
+      submitted_at: new Date().toISOString()
+    }).eq("id", currentAttemptId);
 
-  alert(`Exam Submitted Successfully!\nYour Auto-Graded Score: ${score} / ${totalMarks} (${percentage}%)`);
-  
+    // Fully auto-gradable exams (no short/long answer questions) can be
+    // released to the student immediately. Exams needing manual marking
+    // stay pending until the teacher reviews and releases them.
+    if (!needsManualGrading) {
+      await supabase.from("results").upsert({
+        attempt_id: currentAttemptId,
+        is_released: true
+      }, { onConflict: 'attempt_id' });
+    }
+  }
+
+  alert(needsManualGrading
+    ? `Exam submitted successfully!\nAuto-graded portion: ${score} / ${totalMarks} (${percentage}%)\nSome answers require manual marking - your final result will be released once your teacher reviews it.`
+    : `Exam Submitted Successfully!\nYour Score: ${score} / ${totalMarks} (${percentage}%)`);
+
+  currentAttemptId = null;
+
   hideAllScreens();
   document.getElementById("student-portal").classList.remove("hidden");
   switchStudentTab('results');
@@ -969,14 +1191,34 @@ async function loadStudentResults() {
   const box = document.getElementById("student-results-list");
   box.innerHTML = "Loading results...";
 
-  const { data: attempts } = await supabase.from("attempts").select("*, exams(title, subject, total_marks)").eq("student_id", currentUser.id);
+  const { data: allAttempts } = await supabase.from("attempts")
+    .select("*, exams(title, subject, total_marks), results(is_released, feedback)")
+    .eq("student_id", currentUser.id).eq("status", "submitted");
 
-  if (!attempts || attempts.length === 0) {
-    box.innerHTML = "<p>No exam attempts or results found.</p>";
+  const attempts = allAttempts || [];
+  if (attempts.length === 0) {
+    box.innerHTML = "<p>No submitted exams yet.</p>";
     return;
   }
 
-  box.innerHTML = attempts.map(a => `
+  box.innerHTML = attempts.map(a => {
+    const resultRow = Array.isArray(a.results) ? a.results[0] : a.results;
+    const isReleased = !!resultRow?.is_released;
+
+    if (!isReleased) {
+      return `
+      <div class="card" style="margin-bottom:15px;">
+        <div class="topbar">
+          <h3>${escapeHtml(a.exams?.title || 'Exam')}</h3>
+          <span class="status-badge status-draft">Pending release</span>
+        </div>
+        <p><b>Subject:</b> ${a.exams?.subject}</p>
+        <p><b>Submitted:</b> ${new Date(a.submitted_at).toLocaleString()}</p>
+        <p style="color:var(--muted); font-size:0.9rem;">Your result will appear here once your teacher releases it.</p>
+      </div>`;
+    }
+
+    return `
     <div class="card" style="margin-bottom:15px;">
       <div class="topbar">
         <h3>${escapeHtml(a.exams?.title || 'Exam')}</h3>
@@ -985,8 +1227,9 @@ async function loadStudentResults() {
       <p><b>Subject:</b> ${a.exams?.subject}</p>
       <p><b>Score Obtained:</b> ${a.score} / ${a.exams?.total_marks}</p>
       <p><b>Submitted:</b> ${new Date(a.submitted_at).toLocaleString()}</p>
-    </div>
-  `).join("");
+      ${resultRow?.feedback ? `<p><b>Teacher Feedback:</b> ${escapeHtml(resultRow.feedback)}</p>` : ''}
+    </div>`;
+  }).join("");
 }
 
 /* UTILITY FUNCTIONS */
