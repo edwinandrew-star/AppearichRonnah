@@ -1571,15 +1571,65 @@ async function routeAuthenticatedUser(user) {
 
   if (error || !profile) {
 
-    console.error(
-      "Profile lookup failed:",
+    console.warn(
+      "Profile lookup failed. Attempting automatic profile repair:",
       error
     );
 
     /*
-     * Do not silently sign the user out. A newly-created account can
-     * exist in Supabase Auth before its profile row is available.
+     * AUTO-REPAIR: Auth can contain a valid user even when the profiles row
+     * was not created (for example, if the account existed before the DB
+     * trigger was installed). Use the role saved in Auth metadata.
+     * Teacher accounts created by this app carry role=teacher; everything
+     * else safely defaults to student.
      */
+    const metadataRole =
+      user.user_metadata && user.user_metadata.role === "teacher"
+        ? "teacher"
+        : "student";
+
+    try {
+      const { error: repairError } = await supabase
+        .from("profiles")
+        .upsert(
+          {
+            id: user.id,
+            role: metadataRole,
+            full_name:
+              (user.user_metadata && user.user_metadata.full_name) ||
+              user.email ||
+              ""
+          },
+          { onConflict: "id" }
+        );
+
+      if (!repairError) {
+        const repaired = await supabase
+          .from("profiles")
+          .select("role,full_name")
+          .eq("id", user.id)
+          .single();
+
+        if (repaired.data && !repaired.error) {
+          profile = repaired.data;
+          error = null;
+        }
+      } else {
+        console.error("Automatic profile repair failed:", repairError);
+      }
+    } catch (repairException) {
+      console.error("Automatic profile repair exception:", repairException);
+    }
+  }
+
+
+  if (error || !profile) {
+
+    console.error(
+      "Profile lookup/repair failed:",
+      error
+    );
+
     currentRole = null;
 
     hide("main-dashboard");
@@ -1599,7 +1649,7 @@ async function routeAuthenticatedUser(user) {
 
     return message(
       "auth-message",
-      "Login successful, but no profile was found. Run the supplied Supabase SQL, then log in again.",
+      "Login worked, but Supabase could not create/read your profile. Please check the profiles table permissions.",
       "error"
     );
   }
