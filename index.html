@@ -55,6 +55,13 @@
       align-items:center;
       z-index:99999;
       transition:opacity .4s ease, visibility .4s ease;
+      animation:splashAutoHide 2.2s ease forwards;
+      pointer-events:none;
+    }
+
+    @keyframes splashAutoHide {
+      0%,78% { opacity:1; visibility:visible; }
+      100% { opacity:0; visibility:hidden; }
     }
 
     #splash-screen.fade-out {
@@ -536,7 +543,7 @@
      ROLE SELECTION
      ============================================================ -->
 
-<div id="role-selection-screen" class="hidden">
+<div id="role-selection-screen">
 
   <div class="role-container">
 
