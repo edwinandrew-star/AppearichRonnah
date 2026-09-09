@@ -55,13 +55,6 @@
       align-items:center;
       z-index:99999;
       transition:opacity .4s ease, visibility .4s ease;
-      animation:splashAutoHide 2.2s ease forwards;
-      pointer-events:none;
-    }
-
-    @keyframes splashAutoHide {
-      0%,78% { opacity:1; visibility:visible; }
-      100% { opacity:0; visibility:hidden; }
     }
 
     #splash-screen.fade-out {
@@ -629,23 +622,23 @@
       </div>
 
 
-      <!-- STUDENT TABS -->
+      <!-- AUTH TABS -->
 
       <div
-        id="auth-tabs"
+        id="student-auth-tabs"
         class="auth-tabs">
 
         <button
-          id="auth-login-tab"
+          id="student-login-tab"
           class="auth-tab active"
-          onclick="showAuthLogin()">
+          onclick="showStudentLogin()">
           Login
         </button>
 
         <button
-          id="auth-signup-tab"
+          id="student-signup-tab"
           class="auth-tab"
-          onclick="showAuthSignup()">
+          onclick="showStudentSignup()">
           Sign Up
         </button>
 
@@ -683,14 +676,14 @@
         id="signup-form"
         class="hidden">
 
-        <p class="small">
-          Create a new account for the selected portal role.
+        <p class="small" id="signup-description">
+          Create a new account for the selected portal.
         </p>
 
         <input
           id="signup-email"
           type="email"
-          placeholder="Student email"
+          placeholder="Email"
           autocomplete="email">
 
         <input
@@ -700,7 +693,6 @@
           autocomplete="new-password">
 
         <button
-          id="signup-submit-btn"
           class="full-btn"
           onclick="signupAccount()">
           Create Account
@@ -1109,8 +1101,8 @@ const SUBJECTS = [
    ============================================================ */
 
 let currentUser = null;
-let currentRole = null;
 let signupRole = "student";
+let currentRole = null;
 let currentMaterial = null;
 let examDeadline = null;
 let globalTimingInterval = null;
@@ -1176,13 +1168,8 @@ function openStudentAuth() {
   signupRole = "student";
   hide("role-selection-screen");
   show("auth-screen");
-
-  document.getElementById("auth-title").textContent = "Student Login";
-  document.getElementById("auth-subtitle").textContent =
-    "Sign in or create your student account.";
-
-  show("auth-tabs");
-  showAuthLogin();
+  show("student-auth-tabs");
+  showStudentLogin();
   clearAuthMessage();
 }
 
@@ -1190,17 +1177,11 @@ function openTeacherAuth() {
   signupRole = "teacher";
   hide("role-selection-screen");
   show("auth-screen");
-
+  show("student-auth-tabs");
+  showStudentLogin();
   document.getElementById("auth-title").textContent = "Teacher Login";
-  document.getElementById("auth-subtitle").textContent =
-    "Sign in or create your teacher account.";
-
-  show("auth-tabs");
-  showAuthLogin();
+  document.getElementById("auth-subtitle").textContent = "Sign in or create your teacher account.";
   clearAuthMessage();
-
-  document.getElementById("login-email").value = "";
-  document.getElementById("login-password").value = "";
 }
 
 function backToRoles() {
@@ -1217,52 +1198,26 @@ function clearAuthMessage() {
   element.classList.remove("error-notice", "success-notice");
 }
 
-/* ============================================================
-   AUTH TABS
-   ============================================================ */
-function showAuthLogin() {
+function showStudentLogin() {
   show("login-form");
   hide("signup-form");
-
-  document.getElementById("auth-login-tab").classList.add("active");
-  document.getElementById("auth-signup-tab").classList.remove("active");
-
-  document.getElementById("auth-title").textContent =
-    signupRole === "teacher" ? "Teacher Login" : "Student Login";
-
-  document.getElementById("auth-subtitle").textContent =
-    signupRole === "teacher"
-      ? "Sign in to your teacher portal."
-      : "Sign in to your student portal.";
-
+  document.getElementById("student-login-tab").classList.add("active");
+  document.getElementById("student-signup-tab").classList.remove("active");
+  const teacher = signupRole === "teacher";
+  document.getElementById("auth-title").textContent = teacher ? "Teacher Login" : "Student Login";
+  document.getElementById("auth-subtitle").textContent = teacher ? "Sign in to your teacher portal." : "Sign in to your student portal.";
   clearAuthMessage();
 }
 
-function showAuthSignup() {
+function showStudentSignup() {
   hide("login-form");
   show("signup-form");
-
-  document.getElementById("auth-login-tab").classList.remove("active");
-  document.getElementById("auth-signup-tab").classList.add("active");
-
-  document.getElementById("auth-title").textContent =
-    signupRole === "teacher"
-      ? "Create Teacher Account"
-      : "Create Student Account";
-
-  document.getElementById("auth-subtitle").textContent =
-    signupRole === "teacher"
-      ? "Create your teacher account to access the teacher portal."
-      : "Create your student account to access the student portal.";
-
-  document.getElementById("signup-email").placeholder =
-    signupRole === "teacher" ? "Teacher email" : "Student email";
-
-  document.getElementById("signup-submit-btn").textContent =
-    signupRole === "teacher"
-      ? "Create Teacher Account"
-      : "Create Student Account";
-
+  document.getElementById("student-login-tab").classList.remove("active");
+  document.getElementById("student-signup-tab").classList.add("active");
+  const teacher = signupRole === "teacher";
+  document.getElementById("auth-title").textContent = teacher ? "Create Teacher Account" : "Create Student Account";
+  document.getElementById("auth-subtitle").textContent = teacher ? "Create an account for the teacher portal." : "Create an account for the student portal.";
+  document.getElementById("signup-description").textContent = teacher ? "Teacher accounts can upload exams and assignments for students." : "Student accounts can view exams and assignments.";
   clearAuthMessage();
 }
 
@@ -1321,404 +1276,93 @@ function initializeSupabase() {
    ============================================================ */
 
 async function login() {
-
-  if (!supabase) {
-
-    return message(
-      "auth-message",
-      "Authentication service is not ready. Please refresh the page.",
-      "error"
-    );
-  }
-
-
-  const email =
-    document.getElementById(
-      "login-email"
-    ).value.trim();
-
-
-  const password =
-    document.getElementById(
-      "login-password"
-    ).value;
-
-
-  if (!email || !password) {
-
-    return message(
-      "auth-message",
-      "Please enter your email and password.",
-      "error"
-    );
-  }
-
-
-  message(
-    "auth-message",
-    "Signing in...",
-    "normal"
-  );
-
-
+  if (!supabase) return message("auth-message", "Authentication service is not ready. Please refresh the page.", "error");
+  const email = document.getElementById("login-email").value.trim();
+  const password = document.getElementById("login-password").value;
+  if (!email || !password) return message("auth-message", "Please enter your email and password.", "error");
+  message("auth-message", "Signing in...", "normal");
   try {
-
-    /* Never leave the button stuck forever if the network/auth service does not respond. */
-    const signInRequest = supabase.auth.signInWithPassword({
-      email,
-      password
-    });
-    const timeoutRequest = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error("Sign-in timed out. Please check your internet connection and Supabase Auth settings.")), 15000)
-    );
-
-    const { data, error } = await Promise.race([
-      signInRequest,
-      timeoutRequest
-    ]);
-
-
-    if (error) {
-
-      return message(
-        "auth-message",
-        error.message,
-        "error"
-      );
-    }
-
-
-    await routeAuthenticatedUser(
-      data.user
-    );
-
-  }
-
-  catch(error) {
-
-    console.error(error);
-
-    message(
-      "auth-message",
-      "Unable to sign in. Please try again.",
-      "error"
-    );
-  }
-}
-
-
-/* ============================================================
-   ACCOUNT SIGNUP
-   ============================================================ */
-
-async function signupAccount() {
-  if (!supabase) {
-    return message(
-      "auth-message",
-      "Authentication service is not ready. Please refresh the page.",
-      "error"
-    );
-  }
-
-  const email = document.getElementById("signup-email").value.trim();
-  const password = document.getElementById("signup-password").value;
-
-  if (!email || !password) {
-    return message(
-      "auth-message",
-      "Please enter an email and password.",
-      "error"
-    );
-  }
-
-  if (password.length < 6) {
-    return message(
-      "auth-message",
-      "Password must contain at least 6 characters.",
-      "error"
-    );
-  }
-
-  const role = signupRole === "teacher" ? "teacher" : "student";
-  const roleName = role === "teacher" ? "teacher" : "student";
-
-  message(
-    "auth-message",
-    `Creating ${roleName} account...`,
-    "normal"
-  );
-
-  try {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          role
-        }
-      }
-    });
-
-    if (error) {
-      return message("auth-message", error.message, "error");
-    }
-
-    /*
-     * If email confirmation is disabled, Supabase returns a live session.
-     * Create the profile immediately so routing does not send the user
-     * back to the role-selection screen.
-     */
-    if (data.session && data.user) {
-      const { error: profileError } = await supabase
-        .from("profiles")
-        .upsert(
-          {
-            id: data.user.id,
-            role: role
-          },
-          {
-            onConflict: "id"
-          }
-        );
-
-      if (profileError) {
-        console.error("Profile creation failed:", profileError);
-
-        await supabase.auth.signOut();
-
-        return message(
-          "auth-message",
-          `Account was created, but the ${role} profile could not be created. Check the profiles RLS policy.`,
-          "error"
-        );
-      }
-
-      message(
-        "auth-message",
-        `${role === "teacher" ? "Teacher" : "Student"} account created successfully. Opening portal...`,
-        "success"
-      );
-
-      await routeAuthenticatedUser(data.user);
-      return;
-    }
-
-    /*
-     * If email confirmation is enabled, there is no authenticated
-     * session yet. The profile should be created by the database
-     * trigger described in the SQL file supplied with this update.
-     */
-    message(
-      "auth-message",
-      "Account created. Check your email to confirm your account, then log in.",
-      "success"
-    );
+    const result = await supabase.auth.signInWithPassword({email, password});
+    if (result.error) return message("auth-message", result.error.message, "error");
+    await routeAuthenticatedUser(result.data.user);
   } catch (error) {
     console.error(error);
-
-    message(
-      "auth-message",
-      "Unable to create the account. Please try again.",
-      "error"
-    );
+    message("auth-message", error.message || "Unable to sign in. Please try again.", "error");
   }
 }
 
-/* ============================================================
-   ROUTE AUTHENTICATED USER
-   ============================================================ */
+async function signupAccount() {
+  if (!supabase) return message("auth-message", "Authentication service is not ready. Please refresh the page.", "error");
+  const email = document.getElementById("signup-email").value.trim();
+  const password = document.getElementById("signup-password").value;
+  const role = signupRole === "teacher" ? "teacher" : "student";
+  if (!email || !password) return message("auth-message", "Please enter an email and password.", "error");
+  if (password.length < 6) return message("auth-message", "Password must contain at least 6 characters.", "error");
+  message("auth-message", `Creating ${role} account...`, "normal");
+  try {
+    const {data, error} = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { role } }
+    });
+    if (error) return message("auth-message", error.message, "error");
+    if (!data.user) return message("auth-message", "Account could not be created.", "error");
+    if (data.session) {
+      await ensureProfile(data.user, role);
+      message("auth-message", `${role === "teacher" ? "Teacher" : "Student"} account created successfully.`, "success");
+      await routeAuthenticatedUser(data.user);
+    } else {
+      message("auth-message", `Account created. Check ${email} for the confirmation link, then log in as ${role}.`, "success");
+    }
+  } catch (error) {
+    console.error(error);
+    message("auth-message", error.message || "Unable to create the account. Please try again.", "error");
+  }
+}
+
+async function ensureProfile(user, fallbackRole) {
+  if (!user || !supabase) return null;
+  const metadataRole = user.user_metadata && user.user_metadata.role;
+  const role = metadataRole === "teacher" ? "teacher" : (metadataRole === "student" ? "student" : fallbackRole);
+  const fullName = (user.user_metadata && user.user_metadata.full_name) || user.email || "";
+  const {data:existing} = await supabase.from("profiles").select("role,full_name").eq("id", user.id).maybeSingle();
+  if (existing) return existing;
+  const {data:created, error} = await supabase.from("profiles").upsert({id:user.id, role, full_name:fullName}, {onConflict:"id"}).select("role,full_name").single();
+  if (error) console.warn("Profile creation failed:", error.message);
+  return created || null;
+}
 
 async function routeAuthenticatedUser(user) {
-
-  if (!supabase || !user) {
-    return;
-  }
-
-
+  if (!supabase || !user) return;
   currentUser = user;
-
-
-  /* Profile lookup must not block the UI forever. */
-  const profileRequest = supabase
-    .from("profiles")
-    .select("role,full_name")
-    .eq("id", user.id)
-    .single();
-
-  const profileTimeout = new Promise((_, reject) =>
-    setTimeout(() => reject(new Error("Profile lookup timed out. Check the profiles table/RLS policies.")), 10000)
-  );
-
-  let profile;
-  let error;
-  try {
-    ({ data: profile, error } = await Promise.race([
-      profileRequest,
-      profileTimeout
-    ]));
-  } catch (profileLookupError) {
-    console.error("Profile lookup timeout/error:", profileLookupError);
-    message(
-      "auth-message",
-      "Login succeeded, but the profile could not be loaded. Check the profiles table and RLS policies.",
-      "error"
-    );
-    currentRole = null;
-    show("auth-screen");
-    return;
+  let {data:profile, error} = await supabase.from("profiles").select("role,full_name").eq("id", user.id).maybeSingle();
+  if (!profile) {
+    profile = await ensureProfile(user, signupRole);
   }
-
-
-  if (error || !profile) {
-
-    console.warn(
-      "Profile lookup failed. Attempting automatic profile repair:",
-      error
-    );
-
-    /*
-     * AUTO-REPAIR: Auth can contain a valid user even when the profiles row
-     * was not created (for example, if the account existed before the DB
-     * trigger was installed). Use the role saved in Auth metadata.
-     * Teacher accounts created by this app carry role=teacher; everything
-     * else safely defaults to student.
-     */
-    const metadataRole =
-      user.user_metadata && user.user_metadata.role === "teacher"
-        ? "teacher"
-        : "student";
-
-    try {
-      const { error: repairError } = await supabase
-        .from("profiles")
-        .upsert(
-          {
-            id: user.id,
-            role: metadataRole,
-            full_name:
-              (user.user_metadata && user.user_metadata.full_name) ||
-              user.email ||
-              ""
-          },
-          { onConflict: "id" }
-        );
-
-      if (!repairError) {
-        const repaired = await supabase
-          .from("profiles")
-          .select("role,full_name")
-          .eq("id", user.id)
-          .single();
-
-        if (repaired.data && !repaired.error) {
-          profile = repaired.data;
-          error = null;
-        }
-      } else {
-        console.error("Automatic profile repair failed:", repairError);
-      }
-    } catch (repairException) {
-      console.error("Automatic profile repair exception:", repairException);
-    }
+  if (!profile) {
+    console.error("Profile lookup failed:", error);
+    return message("auth-message", "Login succeeded, but the account profile could not be created/read. Run the supplied Supabase SQL setup and try again.", "error");
   }
-
-
-  if (error || !profile) {
-
-    console.error(
-      "Profile lookup/repair failed:",
-      error
-    );
-
-    currentRole = null;
-
-    hide("main-dashboard");
-    hide("teacher-portal");
-    hide("exam-workspace-screen");
-    hide("lockout-screen");
-    show("auth-screen");
-
-    document.getElementById("auth-title").textContent =
-      "Finish Account Setup";
-
-    document.getElementById("auth-subtitle").textContent =
-      "Your login worked, but your portal profile is not ready yet.";
-
-    show("auth-tabs");
-    showAuthLogin();
-
-    return message(
-      "auth-message",
-      "Login worked, but Supabase could not create/read your profile. Please check the profiles table permissions.",
-      "error"
-    );
-  }
-
-
-  currentRole =
-    profile.role;
-
-
+  currentRole = profile.role;
   hide("role-selection-screen");
   hide("auth-screen");
   hide("main-dashboard");
   hide("teacher-portal");
   hide("exam-workspace-screen");
   hide("lockout-screen");
-
-
-  if (
-    (currentRole === "teacher/admin" || currentRole === "teacher")
-  ) {
-
-    document.getElementById(
-      "teacher-name"
-    ).textContent =
-      profile.full_name ||
-      user.email;
-
-
+  if (currentRole === "teacher" || currentRole === "admin" || currentRole === "teacher/admin") {
+    document.getElementById("teacher-name").textContent = profile.full_name || user.email;
     await openTeacherPortal();
-
-  }
-
-
-  else if (
-    currentRole === "student"
-  ) {
-
-    document.getElementById(
-      "student-name"
-    ).textContent =
-      profile.full_name ||
-      user.email;
-
-
+  } else if (currentRole === "student") {
+    document.getElementById("student-name").textContent = profile.full_name || user.email;
     await openStudentPortal();
-
-  }
-
-
-  else {
-
+  } else {
     await supabase.auth.signOut();
-
-
-    currentUser = null;
-    currentRole = null;
-
-
-    hide("auth-screen");
-
+    currentUser = null; currentRole = null;
     show("role-selection-screen");
-
-
-    alert(
-      "Unknown account role. Please contact the administrator."
-    );
+    message("auth-message", "Unknown account role. Please contact the administrator.", "error");
   }
 }
-
 
 /* ============================================================
    LOGOUT
@@ -2439,12 +2083,7 @@ async function openTeacherPortal() {
       .join("");
 
 
-  /* Do not block login on the teacher archive query. */
-  loadArchive().catch(error => {
-    console.error("Teacher archive load failed:", error);
-    const box = document.getElementById("admin-archive");
-    if (box) box.textContent = "Archive unavailable. You can still use the teacher portal.";
-  });
+  loadArchive().catch(error => console.error(error));
 }
 
 
@@ -3015,27 +2654,20 @@ window.addEventListener(
     setTimeout(
       () => {
 
-        // Always reveal the role screen before removing the splash.
-        // This prevents a blank/white screen if Supabase takes time to respond.
-        if (!currentUser) {
-          show("role-selection-screen");
-          hide("auth-screen");
-          hide("main-dashboard");
-          hide("teacher-portal");
-          hide("exam-workspace-screen");
-          hide("lockout-screen");
-        }
-
         splash.classList.add(
           "fade-out"
         );
 
+
         setTimeout(
           () => {
+
             hide("splash-screen");
+
           },
           450
         );
+
 
       },
       1800
