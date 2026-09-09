@@ -1,54 +1,45 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
   <meta charset="UTF-8">
-
-<meta
- name="viewport"
- content="width=device-width, initial-scale=1.0">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Appearich Portal</title>
 
   <!-- Supabase -->
-
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4"></script>
 
   <style>
-
     :root {
-      --primary-yellow: #facc15;
-      --bg-black: #000;
-      --dark-charcoal: #111827;
-      --pure-white: #fff;
-      --danger-red: #dc2626;
-      --success-green: #15803d;
-      --card-gray: #f9fafb;
-      --muted: #6b7280;
+      --primary-yellow:#facc15;
+      --bg-black:#000;
+      --dark-charcoal:#111827;
+      --pure-white:#fff;
+      --danger-red:#dc2626;
+      --success-green:#15803d;
+      --card-gray:#f9fafb;
+      --muted:#6b7280;
     }
 
     * {
-      box-sizing: border-box;
+      box-sizing:border-box;
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: var(--pure-white);
-      color: var(--dark-charcoal);
-      margin: 0;
-      min-height: 100vh;
+      font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+      background:var(--pure-white);
+      color:var(--dark-charcoal);
+      margin:0;
+      min-height:100vh;
     }
 
     .hidden {
-      display: none !important;
+      display:none!important;
     }
 
     .app-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
+      max-width:1200px;
+      margin:0 auto;
+      padding:20px;
     }
 
     /* =========================================================
@@ -56,130 +47,128 @@
        ========================================================= */
 
     #splash-screen {
-      position: fixed;
-      inset: 0;
-      background: #000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 99999;
-      transition: opacity .4s ease, visibility .4s ease;
+      position:fixed;
+      inset:0;
+      background:#000;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      z-index:99999;
+      transition:opacity .4s ease, visibility .4s ease;
     }
 
     #splash-screen.fade-out {
-      opacity: 0;
-      visibility: hidden;
+      opacity:0;
+      visibility:hidden;
     }
 
     .logo-main-text {
-      font-size: 4.5rem;
-      font-weight: 900;
-      color: #fff;
-      letter-spacing: 4px;
-      text-align: center;
+      font-size:4.5rem;
+      font-weight:900;
+      color:#fff;
+      letter-spacing:4px;
+      text-align:center;
     }
 
     .logo-sub-text {
-      color: var(--primary-yellow);
-      font-size: 1.6rem;
-      letter-spacing: 3px;
-      font-weight: 600;
-      text-align: center;
+      color:var(--primary-yellow);
+      font-size:1.6rem;
+      letter-spacing:3px;
+      font-weight:600;
+      text-align:center;
     }
 
     /* =========================================================
-       ROLE SELECTION
+       CLEAN WELCOME / ROLE SCREEN
        ========================================================= */
 
     #role-selection-screen {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 25px;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:25px;
       background:
         radial-gradient(circle at top, #1f2937 0%, #000 55%);
     }
 
     .role-container {
-      width: 100%;
-      max-width: 620px;
-      text-align: center;
+      width:100%;
+      max-width:620px;
+      text-align:center;
     }
 
     .role-logo {
-      font-size: 3.5rem;
-      font-weight: 900;
-      letter-spacing: 3px;
-      color: #fff;
-      margin-bottom: 4px;
+      font-size:3.5rem;
+      font-weight:900;
+      letter-spacing:3px;
+      color:#fff;
+      margin-bottom:4px;
     }
 
     .role-tagline {
-      color: var(--primary-yellow);
-      font-weight: 700;
-      letter-spacing: 2px;
-      margin-bottom: 35px;
+      color:var(--primary-yellow);
+      font-weight:700;
+      letter-spacing:2px;
+      margin-bottom:35px;
     }
 
     .role-card {
-      background: #fff;
-      border-radius: 18px;
-      padding: 35px;
-      box-shadow: 0 20px 60px rgba(0,0,0,.35);
+      background:#fff;
+      border-radius:18px;
+      padding:35px;
+      box-shadow:0 20px 60px rgba(0,0,0,.35);
     }
 
     .role-card h1 {
-      margin: 0 0 8px;
-      font-size: 2rem;
+      margin:0 0 8px;
+      font-size:2rem;
     }
 
     .role-card p {
-      color: var(--muted);
-      margin-bottom: 28px;
+      color:var(--muted);
+      margin-bottom:28px;
     }
 
     .role-buttons {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
     }
 
     .role-button {
-      min-height: 130px;
-      border-radius: 14px;
-      border: 2px solid #e5e7eb;
-      background: #f9fafb;
-      color: #111827;
-      padding: 25px 15px;
-      font-size: 1.2rem;
-      font-weight: 800;
-      cursor: pointer;
-      transition: .2s ease;
+      min-height:130px;
+      border-radius:14px;
+      border:2px solid #e5e7eb;
+      background:#f9fafb;
+      color:#111827;
+      padding:25px 15px;
+      font-size:1.2rem;
+      font-weight:800;
+      cursor:pointer;
+      transition:.2s ease;
     }
 
     .role-button:hover {
-      transform: translateY(-3px);
-      border-color: var(--primary-yellow);
-      box-shadow: 0 10px 25px rgba(0,0,0,.12);
+      transform:translateY(-3px);
+      border-color:var(--primary-yellow);
+      box-shadow:0 10px 25px rgba(0,0,0,.12);
     }
 
     .role-icon {
-      display: block;
-      font-size: 2.5rem;
-      margin-bottom: 10px;
+      display:block;
+      font-size:2.5rem;
+      margin-bottom:10px;
     }
 
-    @media(max-width: 600px) {
-
+    @media(max-width:600px) {
       .role-buttons {
-        grid-template-columns: 1fr;
+        grid-template-columns:1fr;
       }
 
       .role-logo {
-        font-size: 2.8rem;
+        font-size:2.8rem;
       }
-
     }
 
     /* =========================================================
@@ -187,83 +176,87 @@
        ========================================================= */
 
     #auth-screen {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 25px;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:25px;
       background:
         radial-gradient(circle at top, #1f2937 0%, #000 65%);
     }
 
     .auth-wrapper {
-      width: 100%;
-      max-width: 500px;
+      width:100%;
+      max-width:500px;
     }
 
     .auth-brand {
-      text-align: center;
-      color: #fff;
-      font-size: 2.8rem;
-      font-weight: 900;
-      letter-spacing: 3px;
-      margin-bottom: 20px;
+      text-align:center;
+      color:#fff;
+      font-size:2.8rem;
+      font-weight:900;
+      letter-spacing:3px;
+      margin-bottom:20px;
     }
 
     .auth-card {
-      background: #fff;
-      border-radius: 16px;
-      border: 2px solid #e5e7eb;
-      padding: 30px;
-      box-shadow: 0 20px 60px rgba(0,0,0,.35);
+      background:#fff;
+      border-radius:16px;
+      border:2px solid #e5e7eb;
+      padding:30px;
+      box-shadow:0 20px 60px rgba(0,0,0,.35);
     }
 
     .auth-card h1 {
-      margin-top: 0;
-      margin-bottom: 8px;
+      margin-top:0;
+      margin-bottom:8px;
+    }
+
+    .auth-card h3 {
+      margin-bottom:8px;
     }
 
     .auth-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 20px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:20px;
     }
 
     .back-btn {
-      background: #111827;
-      color: #facc15;
-      padding: 9px 13px;
-      border-radius: 7px;
+      background:#111827;
+      color:#facc15;
+      padding:9px 13px;
+      border-radius:7px;
     }
 
     .auth-tabs {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-bottom: 20px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+      margin-bottom:20px;
     }
 
     .auth-tab {
-      background: #e5e7eb;
-      color: #111827;
-      border-radius: 7px;
+      background:#e5e7eb;
+      color:#111827;
+      border-radius:7px;
     }
 
     .auth-tab.active {
-      background: #facc15;
-      color: #000;
+      background:#facc15;
+      color:#000;
     }
 
     .full-btn {
-      width: 100%;
+      width:100%;
     }
 
     hr {
-      border: none;
-      border-top: 1px solid #e5e7eb;
-      margin: 25px 0;
+      border:none;
+      border-top:1px solid #e5e7eb;
+      margin:25px 0;
     }
 
     /* =========================================================
@@ -271,264 +264,258 @@
        ========================================================= */
 
     .hero-banner-full {
-      width: 100vw;
-      position: relative;
-      left: 50%;
-      margin-left: -50vw;
-      height: 260px;
+      width:100vw;
+      position:relative;
+      left:50%;
+      margin-left:-50vw;
+      height:260px;
       background:
         linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.9)),
         url('images/banner.jpg');
-      background-size: cover;
-      background-position: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      color: #fff;
-      text-align: center;
-      margin-bottom: 45px;
-      border-bottom: 6px solid var(--primary-yellow);
+      background-size:cover;
+      background-position:center;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      color:#fff;
+      text-align:center;
+      margin-bottom:45px;
+      border-bottom:6px solid var(--primary-yellow);
     }
 
     .hero-banner-full h1 {
-      margin: 0;
-      font-size: 3.5rem;
-      color: var(--primary-yellow);
-      font-weight: 900;
+      margin:0;
+      font-size:3.5rem;
+      color:var(--primary-yellow);
+      font-weight:900;
     }
 
     .section-title {
-      font-size: 1.8rem;
-      font-weight: 800;
-      border-left: 6px solid var(--primary-yellow);
-      padding-left: 15px;
-      margin: 28px 0 20px;
+      font-size:1.8rem;
+      font-weight:800;
+      border-left:6px solid var(--primary-yellow);
+      padding-left:15px;
+      margin:28px 0 20px;
     }
 
     .papers-grid,
     .subjects-grid {
-      display: grid;
-      grid-template-columns: repeat(3,1fr);
-      gap: 20px;
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:20px;
     }
 
     @media(max-width:768px) {
-
       .papers-grid,
       .subjects-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns:1fr;
       }
 
       .logo-main-text {
-        font-size: 3rem;
+        font-size:3rem;
       }
-
     }
 
     .paper-card,
     .subject-card,
     .admin-card {
-      background: var(--card-gray);
-      border-radius: 10px;
-      border: 2px solid #e5e7eb;
-      padding: 25px;
+      background:var(--card-gray);
+      border-radius:10px;
+      border:2px solid #e5e7eb;
+      padding:25px;
     }
 
     .subject-card {
-      transition: .2s ease;
+      transition:.2s ease;
     }
 
     .subject-card:hover {
-      transform: translateY(-3px);
-      border-color: var(--primary-yellow);
+      transform:translateY(-3px);
+      border-color:var(--primary-yellow);
     }
 
     .paper-card {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
     }
 
     button,
     .action-btn {
-      background: var(--primary-yellow);
-      border: none;
-      color: #000;
-      padding: 12px 18px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 700;
+      background:var(--primary-yellow);
+      border:none;
+      color:#000;
+      padding:12px 18px;
+      border-radius:6px;
+      cursor:pointer;
+      font-weight:700;
     }
 
     button.secondary {
-      background: #111827;
-      color: var(--primary-yellow);
+      background:#111827;
+      color:var(--primary-yellow);
     }
 
     button.danger {
-      background: var(--danger-red);
-      color: #fff;
+      background:var(--danger-red);
+      color:#fff;
     }
 
     button.success {
-      background: var(--success-green);
-      color: #fff;
+      background:var(--success-green);
+      color:#fff;
     }
 
     button:disabled {
-      opacity: .55;
-      cursor: not-allowed;
+      opacity:.55;
+      cursor:not-allowed;
     }
 
     input,
     select,
     textarea {
-      width: 100%;
-      padding: 12px;
-      margin: 7px 0 14px;
-      border: 1px solid #d1d5db;
-      border-radius: 6px;
-      font: inherit;
+      width:100%;
+      padding:12px;
+      margin:7px 0 14px;
+      border:1px solid #d1d5db;
+      border-radius:6px;
+      font:inherit;
     }
 
     .row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
     }
 
     @media(max-width:700px) {
-
       .row {
-        grid-template-columns: 1fr;
+        grid-template-columns:1fr;
       }
-
     }
 
     .exam-window {
-      background: #fff;
-      padding: 40px;
-      border-radius: 12px;
-      border: 3px solid #111827;
-      position: relative;
+      background:#fff;
+      padding:40px;
+      border-radius:12px;
+      border:3px solid #111827;
+      position:relative;
     }
 
     .timer {
-      font-size: 1.25rem;
-      font-weight: bold;
-      color: #fff;
-      background: var(--danger-red);
-      padding: 6px 14px;
-      border-radius: 6px;
-      float: right;
+      font-size:1.25rem;
+      font-weight:bold;
+      color:#fff;
+      background:var(--danger-red);
+      padding:6px 14px;
+      border-radius:6px;
+      float:right;
     }
 
     .file-display-container {
-      width: 100%;
-      margin: 20px 0;
-      background: var(--card-gray);
-      padding: 10px;
-      border: 2px solid #e5e7eb;
+      width:100%;
+      margin:20px 0;
+      background:var(--card-gray);
+      padding:10px;
+      border:2px solid #e5e7eb;
     }
 
     .warning-screen {
-      position: fixed;
-      inset: 0;
-      background: #000;
-      color: #fff;
-      z-index: 10000;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 20px;
+      position:fixed;
+      inset:0;
+      background:#000;
+      color:#fff;
+      z-index:10000;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      padding:20px;
     }
 
     .status {
-      display: inline-block;
-      padding: 5px 10px;
-      border-radius: 999px;
-      font-size: .8rem;
-      font-weight: 800;
+      display:inline-block;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:.8rem;
+      font-weight:800;
     }
 
     .locked {
-      background: #fee2e2;
-      color: #991b1b;
+      background:#fee2e2;
+      color:#991b1b;
     }
 
     .unlocked {
-      background: #dcfce7;
-      color: #166534;
+      background:#dcfce7;
+      color:#166534;
     }
 
     .material-item {
-      background: #fff;
-      border: 1px solid #e5e7eb;
-      padding: 15px;
-      border-radius: 8px;
-      margin: 10px 0;
+      background:#fff;
+      border:1px solid #e5e7eb;
+      padding:15px;
+      border-radius:8px;
+      margin:10px 0;
     }
 
     .toolbar {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items: center;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
     }
 
     .topbar {
-      display: flex;
-      justify-content: space-between;
-      gap: 15px;
-      align-items: center;
-      margin-bottom: 18px;
+      display:flex;
+      justify-content:space-between;
+      gap:15px;
+      align-items:center;
+      margin-bottom:18px;
     }
 
     .score-board {
-      background: #1e293b;
-      padding: 25px;
-      border-radius: 8px;
-      border: 2px solid var(--primary-yellow);
-      margin-top: 20px;
-      width: 100%;
-      max-width: 500px;
-      text-align: left;
+      background:#1e293b;
+      padding:25px;
+      border-radius:8px;
+      border:2px solid var(--primary-yellow);
+      margin-top:20px;
+      width:100%;
+      max-width:500px;
+      text-align:left;
     }
 
     .score-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px solid #334155;
+      display:flex;
+      justify-content:space-between;
+      padding:10px 0;
+      border-bottom:1px solid #334155;
     }
 
     .small {
-      color: var(--muted);
-      font-size: .9rem;
+      color:var(--muted);
+      font-size:.9rem;
     }
 
     .notice {
-      padding: 12px;
-      border-radius: 6px;
-      margin: 10px 0;
-      background: #fef3c7;
+      padding:12px;
+      border-radius:6px;
+      margin:10px 0;
+      background:#fef3c7;
     }
 
     .error-notice {
-      background: #fee2e2;
-      color: #991b1b;
+      background:#fee2e2;
+      color:#991b1b;
     }
 
     .success-notice {
-      background: #dcfce7;
-      color: #166534;
+      background:#dcfce7;
+      color:#166534;
     }
-
   </style>
-
 </head>
 
 <body>
@@ -538,22 +525,12 @@
      ============================================================ -->
 
 <div id="splash-screen">
-
   <div>
-
-```
-<div class="logo-main-text">
-  Appearich
-</div>
-
-<div class="logo-sub-text">
-  The Next Chapter
-</div>
-```
-
+    <div class="logo-main-text">Appearich</div>
+    <div class="logo-sub-text">The Next Chapter</div>
   </div>
-
 </div>
+
 
 <!-- ============================================================
      ROLE SELECTION
@@ -563,54 +540,50 @@
 
   <div class="role-container">
 
-```
-<div class="role-logo">
-  Appearich
-</div>
+    <div class="role-logo">
+      Appearich
+    </div>
 
-<div class="role-tagline">
-  THE NEXT CHAPTER
-</div>
+    <div class="role-tagline">
+      THE NEXT CHAPTER
+    </div>
 
-<div class="role-card">
+    <div class="role-card">
 
-  <h1>Welcome</h1>
+      <h1>Welcome</h1>
 
-  <p>
-    Select how you want to continue to the portal.
-  </p>
+      <p>
+        Select how you want to continue to the portal.
+      </p>
 
-  <div class="role-buttons">
+      <div class="role-buttons">
 
-    <button
-      class="role-button"
-      onclick="openStudentAuth()">
+        <button
+          class="role-button"
+          onclick="openStudentAuth()">
 
-      <span class="role-icon">🎓</span>
+          <span class="role-icon">🎓</span>
+          Student
 
-      Student
+        </button>
 
-    </button>
+        <button
+          class="role-button"
+          onclick="openTeacherAuth()">
 
+          <span class="role-icon">👨‍🏫</span>
+          Teacher
 
-    <button
-      class="role-button"
-      onclick="openTeacherAuth()">
+        </button>
 
-      <span class="role-icon">👨‍🏫</span>
+      </div>
 
-      Teacher
-
-    </button>
-
-  </div>
-
-</div>
-```
+    </div>
 
   </div>
 
 </div>
+
 
 <!-- ============================================================
      AUTH SCREEN
@@ -620,154 +593,126 @@
 
   <div class="auth-wrapper">
 
-```
-<div class="auth-brand">
-  Appearich
-</div>
+    <div class="auth-brand">
+      Appearich
+    </div>
 
-<div class="auth-card">
+    <div class="auth-card">
 
-  <div class="auth-header">
+      <div class="auth-header">
 
-    <div>
+        <div>
+          <h1 id="auth-title">
+            Student Login
+          </h1>
 
-      <h1 id="auth-title">
-        Student Login
-      </h1>
+          <div
+            id="auth-subtitle"
+            class="small">
+            Sign in to your student portal.
+          </div>
+        </div>
+
+        <button
+          class="back-btn"
+          onclick="backToRoles()">
+          ← Back
+        </button>
+
+      </div>
+
+
+      <!-- STUDENT TABS -->
 
       <div
-        id="auth-subtitle"
-        class="small">
+        id="auth-tabs"
+        class="auth-tabs">
 
-        Sign in to your student portal.
+        <button
+          id="auth-login-tab"
+          class="auth-tab active"
+          onclick="showAuthLogin()">
+          Login
+        </button>
 
+        <button
+          id="auth-signup-tab"
+          class="auth-tab"
+          onclick="showAuthSignup()">
+          Sign Up
+        </button>
+
+      </div>
+
+
+      <!-- LOGIN FORM -->
+
+      <div id="login-form">
+
+        <input
+          id="login-email"
+          type="email"
+          placeholder="Email"
+          autocomplete="email">
+
+        <input
+          id="login-password"
+          type="password"
+          placeholder="Password"
+          autocomplete="current-password">
+
+        <button
+          class="secondary full-btn"
+          onclick="login()">
+          Log In
+        </button>
+
+      </div>
+
+
+      <!-- STUDENT SIGNUP FORM -->
+
+      <div
+        id="signup-form"
+        class="hidden">
+
+        <p class="small">
+          Create a new account for the selected portal role.
+        </p>
+
+        <input
+          id="signup-email"
+          type="email"
+          placeholder="Student email"
+          autocomplete="email">
+
+        <input
+          id="signup-password"
+          type="password"
+          placeholder="Password (minimum 6 characters)"
+          autocomplete="new-password">
+
+        <button
+          id="signup-submit-btn"
+          class="full-btn"
+          onclick="signupAccount()">
+          Create Account
+        </button>
+
+      </div>
+
+
+      <div
+        id="auth-message"
+        class="notice hidden">
       </div>
 
     </div>
 
-    <button
-      class="back-btn"
-      onclick="backToRoles()">
-
-      ← Back
-
-    </button>
-
-  </div>
-
-
-  <!-- LOGIN / SIGNUP TABS -->
-
-  <div
-    id="auth-tabs"
-    class="auth-tabs">
-
-    <button
-      id="login-tab"
-      class="auth-tab active"
-      onclick="showLogin()">
-
-      Login
-
-    </button>
-
-    <button
-      id="signup-tab"
-      class="auth-tab"
-      onclick="showSignup()">
-
-      Sign Up
-
-    </button>
-
-  </div>
-
-
-  <!-- LOGIN -->
-
-  <div id="login-form">
-
-    <input
-      id="login-email"
-      type="email"
-      placeholder="Email"
-      autocomplete="email">
-
-    <input
-      id="login-password"
-      type="password"
-      placeholder="Password"
-      autocomplete="current-password">
-
-    <button
-      class="secondary full-btn"
-      onclick="login()">
-
-      Log In
-
-    </button>
-
-  </div>
-
-
-  <!-- SIGNUP -->
-
-  <div
-    id="signup-form"
-    class="hidden">
-
-    <p
-      id="signup-description"
-      class="small">
-
-      Create a new account.
-
-    </p>
-
-    <input
-      id="signup-name"
-      type="text"
-      placeholder="Full name"
-      autocomplete="name">
-
-    <input
-      id="signup-email"
-      type="email"
-      placeholder="Email"
-      autocomplete="email">
-
-    <input
-      id="signup-password"
-      type="password"
-      placeholder="Password (minimum 6 characters)"
-      autocomplete="new-password">
-
-    <button
-      id="signup-button"
-      class="full-btn"
-      onclick="signupAccount()">
-
-      Create Account
-
-    </button>
-
-  </div>
-
-
-  <!-- AUTH MESSAGE -->
-
-  <div
-    id="auth-message"
-    class="notice hidden">
-
   </div>
 
 </div>
-```
 
-  </div>
-
-</div>
 
 <!-- ============================================================
      STUDENT PORTAL
@@ -779,140 +724,130 @@
 
   <div class="topbar">
 
-```
-<div>
+    <div>
+      <b id="student-name">
+        Student
+      </b>
 
-  <b id="student-name">
-    Student
-  </b>
+      <div class="small">
+        Student Portal
+      </div>
+    </div>
 
-  <div class="small">
-    Student Portal
-  </div>
-
-</div>
-
-<button
-  class="secondary"
-  onclick="logout()">
-
-  Log out
-
-</button>
-```
+    <button
+      class="secondary"
+      onclick="logout()">
+      Log out
+    </button>
 
   </div>
+
 
   <div class="hero-banner-full">
 
-```
-<h1>
-  Appearich
-</h1>
+    <h1>
+      Appearich
+    </h1>
 
-<p>
-  "Saw a seed of preparation today for your next chapter"
-</p>
-```
+    <p>
+      "Saw a seed of preparation today for ur next chapter"
+    </p>
 
   </div>
+
 
   <h2 class="section-title">
     Your Published Grades
   </h2>
 
+
   <div class="score-board">
 
-```
-<div
-  class="score-row"
-  style="font-weight:bold;color:var(--primary-yellow)">
+    <div
+      class="score-row"
+      style="font-weight:bold;color:var(--primary-yellow)">
 
-  <span>
-    Subject Name
-  </span>
+      <span>
+        Subject Name
+      </span>
 
-  <span>
-    Achieved Grade
-  </span>
+      <span>
+        Achieved Grade
+      </span>
 
-</div>
-
-
-<div
-  class="score-row"
-  style="color:#cbd5e1">
-
-  <span>
-    Mathematics Core Paper
-  </span>
-
-  <span id="grade-math-box">
-    PENDING
-  </span>
-
-</div>
+    </div>
 
 
-<div
-  class="score-row"
-  style="color:#cbd5e1">
+    <div
+      class="score-row"
+      style="color:#cbd5e1">
 
-  <span>
-    Science Core Paper
-  </span>
+      <span>
+        Mathematics Core Paper
+      </span>
 
-  <span id="grade-science-box">
-    NOT ATTEMPTED
-  </span>
+      <span id="grade-math-box">
+        PENDING
+      </span>
 
-</div>
-```
+    </div>
+
+
+    <div
+      class="score-row"
+      style="color:#cbd5e1">
+
+      <span>
+        Science Core Paper
+      </span>
+
+      <span id="grade-science-box">
+        NOT ATTEMPTED
+      </span>
+
+    </div>
 
   </div>
+
 
   <h2 class="section-title">
     Subjects
   </h2>
 
+
   <div
     id="student-subjects"
     class="subjects-grid">
-
   </div>
+
 
   <div
     id="student-materials-section"
     class="hidden">
 
-```
-<div class="toolbar">
+    <div class="toolbar">
 
-  <button
-    class="secondary"
-    onclick="closeStudentSubject()">
+      <button
+        class="secondary"
+        onclick="closeStudentSubject()">
+        ← Subjects
+      </button>
 
-    ← Subjects
+      <h2
+        id="student-subject-title"
+        class="section-title"
+        style="margin:0">
+        Subject
+      </h2>
 
-  </button>
+    </div>
 
-  <h2
-    id="student-subject-title"
-    class="section-title"
-    style="margin:0">
-
-    Subject
-
-  </h2>
-
-</div>
-
-<div id="student-materials"></div>
-```
+    <div id="student-materials"></div>
 
   </div>
 
 </div>
+
 
 <!-- ============================================================
      EXAM WORKSPACE
@@ -924,46 +859,40 @@
 
   <div class="exam-window">
 
-```
-<span class="timer">
+    <span class="timer">
 
-  Time Left:
+      Time Left:
 
-  <span id="time-display">
-    75:00
-  </span>
+      <span id="time-display">
+        75:00
+      </span>
 
-</span>
+    </span>
 
+    <h2 id="exam-title-header">
+      Exam Paper
+    </h2>
 
-<h2 id="exam-title-header">
-  Exam Paper
-</h2>
+    <hr>
 
+    <div
+      id="questions-injection-box"
+      class="file-display-container">
+    </div>
 
-<hr>
+    <button
+      class="success"
+      style="width:100%"
+      onclick="triggerManualFinish()">
 
+      Finish Exam & Submit Work
 
-<div
-  id="questions-injection-box"
-  class="file-display-container">
-
-</div>
-
-
-<button
-  class="success"
-  style="width:100%"
-  onclick="triggerManualFinish()">
-
-  Finish Exam & Submit Work
-
-</button>
-```
+    </button>
 
   </div>
 
 </div>
+
 
 <!-- ============================================================
      LOCKOUT
@@ -976,19 +905,13 @@
   <h1
     style="color:var(--danger-red);font-size:3rem">
 
-```
-🔴 ACCESS DENIED
-```
+    🔴 ACCESS DENIED
 
   </h1>
 
   <p id="lockout-paragraph">
-
-```
-This exam attempt is locked.
-Please contact your instructor.
-```
-
+    This exam attempt is locked.
+    Please contact your instructor.
   </p>
 
   <button onclick="returnToStudentPortal()">
@@ -997,8 +920,9 @@ Please contact your instructor.
 
 </div>
 
+
 <!-- ============================================================
-     TEACHER PORTAL
+     TEACHER / ADMIN PORTAL
      ============================================================ -->
 
 <div
@@ -1007,134 +931,136 @@ Please contact your instructor.
 
   <div class="topbar">
 
-```
-<div>
+    <div>
 
-  <b id="teacher-name">
-    Teacher/Admin
-  </b>
+      <b id="teacher-name">
+        Teacher/Admin
+      </b>
 
-  <div class="small">
-    Authorized Teacher/Admin Portal
-  </div>
+      <div class="small">
+        Authorized Teacher/Admin Portal
+      </div>
 
-</div>
+    </div>
 
-<button
-  class="secondary"
-  onclick="logout()">
-
-  Log out
-
-</button>
-```
+    <button
+      class="secondary"
+      onclick="logout()">
+      Log out
+    </button>
 
   </div>
+
 
   <div class="hero-banner-full">
 
-```
-<h1>
-  Appearich
-</h1>
+    <h1>
+      Appearich
+    </h1>
 
-<p>
-  Academic Management
-</p>
-```
+    <p>
+      Academic Management
+    </p>
 
   </div>
+
 
   <div class="admin-card">
 
-```
-<h2>
-  Upload Academic Material
-</h2>
+    <h2>
+      Upload Academic Material
+    </h2>
 
 
-<div class="row">
+    <div class="row">
 
-  <div>
+      <div>
 
-    <label>
-      Type
-    </label>
+        <label>
+          Type
+        </label>
 
-    <select id="material-type">
+        <select id="material-type">
 
-      <option value="exam">
-        Exam
-      </option>
+          <option value="exam">
+            Exam
+          </option>
 
-      <option value="assignment">
-        Assignment
-      </option>
+          <option value="assignment">
+            Assignment
+          </option>
 
-    </select>
+        </select>
 
-  </div>
-
-
-  <div>
-
-    <label>
-      Subject
-    </label>
-
-    <select id="material-subject">
-    </select>
-
-  </div>
-
-</div>
+      </div>
 
 
-<input
-  id="material-title"
-  placeholder="Material title">
+      <div>
+
+        <label>
+          Subject
+        </label>
+
+        <select id="material-subject">
+        </select>
+
+      </div>
+
+    </div>
 
 
-<textarea
-  id="material-details"
-  rows="3"
-  placeholder="Details / instructions"></textarea>
+    <input
+      id="material-title"
+      placeholder="Material title">
 
 
-<input
-  id="material-unlock-code"
-  placeholder="Unlock code (required for exams)">
+    <textarea
+      id="material-details"
+      rows="3"
+      placeholder="Details / instructions">
+    </textarea>
 
 
-<input
-  id="material-file"
-  type="file"
-  accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg">
+    <input
+      id="material-unlock-code"
+      placeholder="Unlock code (required for exams)">
 
 
-<button onclick="uploadMaterial()">
-  Upload & Store Permanently
-</button>
+    <input
+      id="material-file"
+      type="file"
+      accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg">
 
 
-<div
-  id="admin-message"
-  class="notice hidden">
+    <button onclick="uploadMaterial()">
+      Upload & Store Permanently
+    </button>
 
-</div>
-```
+
+    <div
+      id="admin-message"
+      class="notice hidden">
+    </div>
 
   </div>
+
 
   <h2 class="section-title">
     Permanent Academic Archive
   </h2>
 
+
   <div id="admin-archive"></div>
 
 </div>
 
+
 <script>
+
+/* ============================================================
+   APPEARICH PORTAL
+   ============================================================ */
+
 
 /* ============================================================
    SUPABASE CONFIGURATION
@@ -1143,6 +1069,11 @@ Please contact your instructor.
 const SUPABASE_URL =
   "https://ccrxhifqtdhnkmxbafks.supabase.co";
 
+/*
+ * Current Supabase Publishable Key.
+ *
+ * Do NOT use the old anon JWT here.
+ */
 const SUPABASE_PUBLISHABLE_KEY =
   "sb_publishable_ziPIPAbBa7Ta2XpIGeDfiA_LnCkZ0YB";
 
@@ -1151,7 +1082,7 @@ let supabase = null;
 
 
 /* ============================================================
-   SUBJECTS
+   SUBJECT SOURCE OF TRUTH
    ============================================================ */
 
 const SUBJECTS = [
@@ -1172,8 +1103,7 @@ const SUBJECTS = [
 
 let currentUser = null;
 let currentRole = null;
-let selectedAuthRole = "student";
-
+let signupRole = "student";
 let currentMaterial = null;
 let examDeadline = null;
 let globalTimingInterval = null;
@@ -1192,7 +1122,6 @@ function show(id) {
   if (element) {
     element.classList.remove("hidden");
   }
-
 }
 
 
@@ -1204,7 +1133,6 @@ function hide(id) {
   if (element) {
     element.classList.add("hidden");
   }
-
 }
 
 
@@ -1230,26 +1158,6 @@ function message(id, text, type = "normal") {
   if (type === "success") {
     element.classList.add("success-notice");
   }
-
-}
-
-
-function clearAuthMessage() {
-
-  const element =
-    document.getElementById("auth-message");
-
-  if (!element) return;
-
-  element.textContent = "";
-
-  element.classList.add("hidden");
-
-  element.classList.remove(
-    "error-notice",
-    "success-notice"
-  );
-
 }
 
 
@@ -1258,153 +1166,98 @@ function clearAuthMessage() {
    ============================================================ */
 
 function openStudentAuth() {
-
-  selectedAuthRole = "student";
-
+  signupRole = "student";
   hide("role-selection-screen");
-
   show("auth-screen");
 
-  document.getElementById("auth-title").textContent =
-    "Student Login";
-
+  document.getElementById("auth-title").textContent = "Student Login";
   document.getElementById("auth-subtitle").textContent =
     "Sign in or create your student account.";
 
-  document.getElementById("signup-description").textContent =
-    "Create a student account to access the student portal.";
-
-  document.getElementById("signup-button").textContent =
-    "Create Student Account";
-
-  showLogin();
-
+  show("auth-tabs");
+  showAuthLogin();
   clearAuthMessage();
-
 }
 
-
 function openTeacherAuth() {
-
-  selectedAuthRole = "teacher/admin";
-
+  signupRole = "teacher";
   hide("role-selection-screen");
-
   show("auth-screen");
 
-  document.getElementById("auth-title").textContent =
-    "Teacher Login";
-
+  document.getElementById("auth-title").textContent = "Teacher Login";
   document.getElementById("auth-subtitle").textContent =
     "Sign in or create your teacher account.";
 
-  document.getElementById("signup-description").textContent =
-    "Create a teacher account to access the academic management portal.";
-
-  document.getElementById("signup-button").textContent =
-    "Create Teacher Account";
-
-  showLogin();
-
+  show("auth-tabs");
+  showAuthLogin();
   clearAuthMessage();
 
+  document.getElementById("login-email").value = "";
+  document.getElementById("login-password").value = "";
 }
-
 
 function backToRoles() {
-
   hide("auth-screen");
-
   show("role-selection-screen");
-
   clearAuthMessage();
-
 }
 
+function clearAuthMessage() {
+  const element = document.getElementById("auth-message");
+  if (!element) return;
+  element.textContent = "";
+  element.classList.add("hidden");
+  element.classList.remove("error-notice", "success-notice");
+}
 
 /* ============================================================
    AUTH TABS
    ============================================================ */
-
-function showLogin() {
-
+function showAuthLogin() {
   show("login-form");
-
   hide("signup-form");
 
-  document
-    .getElementById("login-tab")
-    .classList
-    .add("active");
+  document.getElementById("auth-login-tab").classList.add("active");
+  document.getElementById("auth-signup-tab").classList.remove("active");
 
-  document
-    .getElementById("signup-tab")
-    .classList
-    .remove("active");
+  document.getElementById("auth-title").textContent =
+    signupRole === "teacher" ? "Teacher Login" : "Student Login";
 
-
-  if (selectedAuthRole === "student") {
-
-    document.getElementById("auth-title").textContent =
-      "Student Login";
-
-    document.getElementById("auth-subtitle").textContent =
-      "Sign in to your student portal.";
-
-  } else {
-
-    document.getElementById("auth-title").textContent =
-      "Teacher Login";
-
-    document.getElementById("auth-subtitle").textContent =
-      "Sign in to your teacher portal.";
-
-  }
+  document.getElementById("auth-subtitle").textContent =
+    signupRole === "teacher"
+      ? "Sign in to your teacher portal."
+      : "Sign in to your student portal.";
 
   clearAuthMessage();
-
 }
 
-
-function showSignup() {
-
+function showAuthSignup() {
   hide("login-form");
-
   show("signup-form");
 
-  document
-    .getElementById("login-tab")
-    .classList
-    .remove("active");
+  document.getElementById("auth-login-tab").classList.remove("active");
+  document.getElementById("auth-signup-tab").classList.add("active");
 
-  document
-    .getElementById("signup-tab")
-    .classList
-    .add("active");
+  document.getElementById("auth-title").textContent =
+    signupRole === "teacher"
+      ? "Create Teacher Account"
+      : "Create Student Account";
 
+  document.getElementById("auth-subtitle").textContent =
+    signupRole === "teacher"
+      ? "Create your teacher account to access the teacher portal."
+      : "Create your student account to access the student portal.";
 
-  if (selectedAuthRole === "student") {
+  document.getElementById("signup-email").placeholder =
+    signupRole === "teacher" ? "Teacher email" : "Student email";
 
-    document.getElementById("auth-title").textContent =
-      "Create Student Account";
-
-    document.getElementById("auth-subtitle").textContent =
-      "Create your account to access the student portal.";
-
-  } else {
-
-    document.getElementById("auth-title").textContent =
-      "Create Teacher Account";
-
-    document.getElementById("auth-subtitle").textContent =
-      "Create your teacher account to access academic management.";
-
-  }
+  document.getElementById("signup-submit-btn").textContent =
+    signupRole === "teacher"
+      ? "Create Teacher Account"
+      : "Create Student Account";
 
   clearAuthMessage();
-
 }
-
 
 /* ============================================================
    SUPABASE INITIALIZATION
@@ -1422,7 +1275,6 @@ function initializeSupabase() {
     );
 
     return false;
-
   }
 
 
@@ -1434,9 +1286,9 @@ function initializeSupabase() {
         SUPABASE_PUBLISHABLE_KEY,
         {
           auth: {
-            persistSession: true,
-            autoRefreshToken: true,
-            detectSessionInUrl: true
+            persistSession:true,
+            autoRefreshToken:true,
+            detectSessionInUrl:true
           }
         }
       );
@@ -1453,9 +1305,7 @@ function initializeSupabase() {
     );
 
     return false;
-
   }
-
 }
 
 
@@ -1472,21 +1322,19 @@ async function login() {
       "Authentication service is not ready. Please refresh the page.",
       "error"
     );
-
   }
 
 
   const email =
-    document
-      .getElementById("login-email")
-      .value
-      .trim();
+    document.getElementById(
+      "login-email"
+    ).value.trim();
 
 
   const password =
-    document
-      .getElementById("login-password")
-      .value;
+    document.getElementById(
+      "login-password"
+    ).value;
 
 
   if (!email || !password) {
@@ -1496,7 +1344,6 @@ async function login() {
       "Please enter your email and password.",
       "error"
     );
-
   }
 
 
@@ -1509,7 +1356,10 @@ async function login() {
 
   try {
 
-    const { data, error } =
+    const {
+      data,
+      error
+    } =
       await supabase.auth.signInWithPassword({
         email,
         password
@@ -1523,7 +1373,6 @@ async function login() {
         error.message,
         "error"
       );
-
     }
 
 
@@ -1531,8 +1380,9 @@ async function login() {
       data.user
     );
 
+  }
 
-  } catch(error) {
+  catch(error) {
 
     console.error(error);
 
@@ -1541,201 +1391,117 @@ async function login() {
       "Unable to sign in. Please try again.",
       "error"
     );
-
   }
-
 }
 
 
 /* ============================================================
-   STUDENT / TEACHER SIGNUP
+   ACCOUNT SIGNUP
    ============================================================ */
 
 async function signupAccount() {
-
   if (!supabase) {
-
     return message(
       "auth-message",
       "Authentication service is not ready. Please refresh the page.",
       "error"
     );
-
   }
 
+  const email = document.getElementById("signup-email").value.trim();
+  const password = document.getElementById("signup-password").value;
 
-  const fullName =
-    document
-      .getElementById("signup-name")
-      .value
-      .trim();
-
-
-  const email =
-    document
-      .getElementById("signup-email")
-      .value
-      .trim();
-
-
-  const password =
-    document
-      .getElementById("signup-password")
-      .value;
-
-
-  if (!fullName || !email || !password) {
-
+  if (!email || !password) {
     return message(
       "auth-message",
-      "Please enter your full name, email and password.",
+      "Please enter an email and password.",
       "error"
     );
-
   }
 
-
   if (password.length < 6) {
-
     return message(
       "auth-message",
       "Password must contain at least 6 characters.",
       "error"
     );
-
   }
 
+  const role = signupRole === "teacher" ? "teacher" : "student";
+  const roleName = role === "teacher" ? "teacher" : "student";
 
   message(
     "auth-message",
-    selectedAuthRole === "student"
-      ? "Creating student account..."
-      : "Creating teacher account...",
+    `Creating ${roleName} account...`,
     "normal"
   );
 
-
   try {
-
-    const { data, error } =
-      await supabase.auth.signUp({
-
-        email,
-
-        password,
-
-        options: {
-
-          data: {
-
-            full_name: fullName,
-
-            role: selectedAuthRole
-
-          }
-
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          role
         }
-
-      });
-
+      }
+    });
 
     if (error) {
-
-      return message(
-        "auth-message",
-        error.message,
-        "error"
-      );
-
+      return message("auth-message", error.message, "error");
     }
 
-
     /*
-      Create the portal profile automatically.
-    */
-
-    if (data.user) {
-
-      const { error: profileError } =
-        await supabase
-          .from("profiles")
-          .upsert(
-            {
-              id: data.user.id,
-              full_name: fullName,
-              role: selectedAuthRole
-            },
-            {
-              onConflict: "id"
-            }
-          );
-
+     * If email confirmation is disabled, Supabase returns a live session.
+     * Create the profile immediately so routing does not send the user
+     * back to the role-selection screen.
+     */
+    if (data.session && data.user) {
+      const { error: profileError } = await supabase
+        .from("profiles")
+        .upsert(
+          {
+            id: data.user.id,
+            role: role
+          },
+          {
+            onConflict: "id"
+          }
+        );
 
       if (profileError) {
+        console.error("Profile creation failed:", profileError);
 
-        console.error(
-          "Profile creation error:",
-          profileError
-        );
+        await supabase.auth.signOut();
 
         return message(
           "auth-message",
-          "Account was created, but the portal profile could not be created: " +
-          profileError.message,
+          `Account was created, but the ${role} profile could not be created. Check the profiles RLS policy.`,
           "error"
         );
-
       }
-
-    }
-
-
-    /*
-      If email confirmation is disabled,
-      Supabase provides a session immediately.
-    */
-
-    if (data.session) {
 
       message(
         "auth-message",
-        selectedAuthRole === "student"
-          ? "Student account created successfully. Opening portal..."
-          : "Teacher account created successfully. Opening portal...",
+        `${role === "teacher" ? "Teacher" : "Student"} account created successfully. Opening portal...`,
         "success"
       );
 
-
-      setTimeout(
-        async () => {
-
-          await routeAuthenticatedUser(
-            data.user
-          );
-
-        },
-        500
-      );
-
-
+      await routeAuthenticatedUser(data.user);
       return;
-
     }
 
-
     /*
-      Email confirmation is enabled.
-    */
-
+     * If email confirmation is enabled, there is no authenticated
+     * session yet. The profile should be created by the database
+     * trigger described in the SQL file supplied with this update.
+     */
     message(
       "auth-message",
-      "Account created successfully. Please check your email and confirm your account before logging in.",
+      "Account created. Check your email to confirm your account, then log in.",
       "success"
     );
-
-
-  } catch(error) {
-
+  } catch (error) {
     console.error(error);
 
     message(
@@ -1743,11 +1509,8 @@ async function signupAccount() {
       "Unable to create the account. Please try again.",
       "error"
     );
-
   }
-
 }
-
 
 /* ============================================================
    ROUTE AUTHENTICATED USER
@@ -1764,41 +1527,49 @@ async function routeAuthenticatedUser(user) {
 
 
   const {
-    data: profile,
+    data:profile,
     error
   } =
     await supabase
       .from("profiles")
       .select("role,full_name")
       .eq("id", user.id)
-      .maybeSingle();
+      .single();
 
 
-  if (error) {
+  if (error || !profile) {
 
     console.error(
       "Profile lookup failed:",
       error
     );
 
+    /*
+     * Do not silently sign the user out. A newly-created account can
+     * exist in Supabase Auth before its profile row is available.
+     */
+    currentRole = null;
+
+    hide("main-dashboard");
+    hide("teacher-portal");
+    hide("exam-workspace-screen");
+    hide("lockout-screen");
+    show("auth-screen");
+
+    document.getElementById("auth-title").textContent =
+      "Finish Account Setup";
+
+    document.getElementById("auth-subtitle").textContent =
+      "Your login worked, but your portal profile is not ready yet.";
+
+    show("auth-tabs");
+    showAuthLogin();
+
     return message(
       "auth-message",
-      "Unable to load your portal profile: " +
-      error.message,
+      "Login successful, but no profile was found. Run the supplied Supabase SQL, then log in again.",
       "error"
     );
-
-  }
-
-
-  if (!profile) {
-
-    return message(
-      "auth-message",
-      "Your account is authenticated, but no portal profile exists yet.",
-      "error"
-    );
-
   }
 
 
@@ -1807,74 +1578,63 @@ async function routeAuthenticatedUser(user) {
 
 
   hide("role-selection-screen");
-
   hide("auth-screen");
-
   hide("main-dashboard");
-
   hide("teacher-portal");
-
   hide("exam-workspace-screen");
-
   hide("lockout-screen");
 
 
-  /* TEACHER */
-
   if (
-    currentRole === "teacher/admin"
+    (currentRole === "teacher/admin" || currentRole === "teacher")
   ) {
 
-    document
-      .getElementById("teacher-name")
-      .textContent =
-        profile.full_name ||
-        user.email;
+    document.getElementById(
+      "teacher-name"
+    ).textContent =
+      profile.full_name ||
+      user.email;
 
 
     await openTeacherPortal();
 
-    return;
-
   }
 
 
-  /* STUDENT */
-
-  if (
+  else if (
     currentRole === "student"
   ) {
 
-    document
-      .getElementById("student-name")
-      .textContent =
-        profile.full_name ||
-        user.email;
+    document.getElementById(
+      "student-name"
+    ).textContent =
+      profile.full_name ||
+      user.email;
 
 
     await openStudentPortal();
 
-    return;
-
   }
 
 
-  /* UNKNOWN ROLE */
+  else {
 
-  await supabase.auth.signOut();
-
-
-  currentUser = null;
-  currentRole = null;
+    await supabase.auth.signOut();
 
 
-  show("role-selection-screen");
+    currentUser = null;
+    currentRole = null;
 
 
-  alert(
-    "Unknown account role. Please contact the administrator."
-  );
+    hide("auth-screen");
 
+    show("role-selection-screen");
+
+
+    alert(
+      "Unknown account role. Please contact the administrator."
+    );
+  }
 }
 
 
@@ -1884,16 +1644,15 @@ async function routeAuthenticatedUser(user) {
 
 async function logout() {
 
-  clearInterval(globalTimingInterval);
+  clearInterval(
+    globalTimingInterval
+  );
 
   isExamActive = false;
 
   currentMaterial = null;
-
   currentRole = null;
-
   currentUser = null;
-
   examDeadline = null;
 
 
@@ -1903,18 +1662,13 @@ async function logout() {
 
 
   hide("main-dashboard");
-
   hide("teacher-portal");
-
   hide("exam-workspace-screen");
-
   hide("lockout-screen");
-
   hide("auth-screen");
 
 
   show("role-selection-screen");
-
 }
 
 
@@ -1974,7 +1728,6 @@ async function openStudentPortal() {
     box.appendChild(card);
 
   });
-
 }
 
 
@@ -1987,7 +1740,6 @@ function closeStudentSubject() {
   hide(
     "student-materials-section"
   );
-
 }
 
 
@@ -2031,7 +1783,7 @@ async function openStudentSubject(subject) {
       .order(
         "created_at",
         {
-          ascending: false
+          ascending:false
         }
       );
 
@@ -2042,7 +1794,6 @@ async function openStudentSubject(subject) {
       "Unable to load materials.";
 
     return;
-
   }
 
 
@@ -2055,7 +1806,6 @@ async function openStudentSubject(subject) {
       '<div class="material-item">No materials available for this subject.</div>';
 
     return;
-
   }
 
 
@@ -2092,7 +1842,9 @@ async function openStudentSubject(subject) {
 
       ${
         m.material_type === "exam"
+
         ? `
+
           <span class="status ${
             locked
               ? "locked"
@@ -2106,13 +1858,18 @@ async function openStudentSubject(subject) {
             }
 
           </span>
+
         `
+
         : `
+
           <span class="status unlocked">
             AVAILABLE
           </span>
+
         `
       }
+
 
       <div style="margin-top:10px">
 
@@ -2144,7 +1901,6 @@ async function openStudentSubject(subject) {
     box.appendChild(item);
 
   });
-
 }
 
 
@@ -2159,7 +1915,7 @@ async function openMaterial(material) {
 
 
   const {
-    data: full,
+    data:full,
     error
   } =
     await supabase
@@ -2179,7 +1935,6 @@ async function openMaterial(material) {
     return showLockout(
       "Unable to open this material."
     );
-
   }
 
 
@@ -2191,7 +1946,6 @@ async function openMaterial(material) {
     return showLockout(
       "This exam is currently locked."
     );
-
   }
 
 
@@ -2214,7 +1968,6 @@ async function openMaterial(material) {
       return showLockout(
         started.error.message
       );
-
     }
 
 
@@ -2260,6 +2013,7 @@ async function openMaterial(material) {
 
   }
 
+
   else {
 
     const section =
@@ -2298,9 +2052,7 @@ async function openMaterial(material) {
       full,
       "assignment-file-view"
     );
-
   }
-
 }
 
 
@@ -2352,7 +2104,6 @@ async function renderMaterial(
       "<p>File access is not currently authorized.</p>";
 
     return;
-
   }
 
 
@@ -2429,9 +2180,7 @@ async function renderMaterial(
     target.appendChild(
       p
     );
-
   }
-
 }
 
 
@@ -2465,7 +2214,6 @@ function calculateTimeRemaining() {
     );
 
     return;
-
   }
 
 
@@ -2483,7 +2231,6 @@ function calculateTimeRemaining() {
     "time-display"
   ).textContent =
     `${mins}:${String(secs).padStart(2,"0")}`;
-
 }
 
 
@@ -2522,14 +2269,12 @@ async function handleViolationLockout(
           reason
       }
     );
-
   }
 
 
   showLockout(
     reason
   );
-
 }
 
 
@@ -2542,7 +2287,6 @@ async function triggerManualFinish() {
   await handleViolationLockout(
     "Exam finished and submitted."
   );
-
 }
 
 
@@ -2563,7 +2307,6 @@ function showLockout(text) {
   hide("exam-workspace-screen");
 
   show("lockout-screen");
-
 }
 
 
@@ -2585,7 +2328,6 @@ function returnToStudentPortal() {
 
 
   openStudentPortal();
-
 }
 
 
@@ -2616,7 +2358,6 @@ async function openTeacherPortal() {
 
 
   await loadArchive();
-
 }
 
 
@@ -2633,7 +2374,6 @@ async function uploadMaterial() {
       "Authentication service is not ready.",
       "error"
     );
-
   }
 
 
@@ -2652,15 +2392,13 @@ async function uploadMaterial() {
   const title =
     document.getElementById(
       "material-title"
-    ).value
-    .trim();
+    ).value.trim();
 
 
   const details =
     document.getElementById(
       "material-details"
-    ).value
-    .trim();
+    ).value.trim();
 
 
   const unlockCode =
@@ -2682,7 +2420,6 @@ async function uploadMaterial() {
       "Title is required.",
       "error"
     );
-
   }
 
 
@@ -2696,26 +2433,31 @@ async function uploadMaterial() {
       "An unlock code is required for an exam.",
       "error"
     );
-
   }
 
 
   const {
-    data: material,
+    data:material,
     error
   } =
     await supabase
       .from("academic_materials")
       .insert({
+
         subject,
+
         title,
+
         details,
+
         material_type:
           type,
+
         unlock_code:
           type === "exam"
             ? unlockCode
             : null
+
       })
       .select()
       .single();
@@ -2728,7 +2470,6 @@ async function uploadMaterial() {
       error.message,
       "error"
     );
-
   }
 
 
@@ -2749,7 +2490,7 @@ async function uploadMaterial() {
           path,
           file,
           {
-            upsert: false
+            upsert:false
           }
         );
 
@@ -2770,7 +2511,6 @@ async function uploadMaterial() {
         up.error.message,
         "error"
       );
-
     }
 
 
@@ -2778,7 +2518,7 @@ async function uploadMaterial() {
       await supabase
         .from("academic_materials")
         .update({
-          storage_path: path
+          storage_path:path
         })
         .eq(
           "id",
@@ -2793,19 +2533,19 @@ async function uploadMaterial() {
         saved.error.message,
         "error"
       );
-
     }
-
   }
 
 
   message(
     "admin-message",
+
     `${
       type === "exam"
         ? "Exam uploaded and automatically LOCKED."
         : "Assignment uploaded and stored permanently."
     }`,
+
     "success"
   );
 
@@ -2831,7 +2571,6 @@ async function uploadMaterial() {
 
 
   await loadArchive();
-
 }
 
 
@@ -2861,7 +2600,7 @@ async function loadArchive() {
       .order(
         "created_at",
         {
-          ascending: false
+          ascending:false
         }
       );
 
@@ -2872,7 +2611,6 @@ async function loadArchive() {
       "Archive unavailable.";
 
     return;
-
   }
 
 
@@ -2888,7 +2626,6 @@ async function loadArchive() {
       '<div class="material-item">No academic materials have been uploaded yet.</div>';
 
     return;
-
   }
 
 
@@ -2916,9 +2653,7 @@ async function loadArchive() {
 
 
       <p>
-
         ${escapeHtml(m.details || "")}
-
       </p>
 
 
@@ -2932,11 +2667,13 @@ async function loadArchive() {
 
         ${
           m.material_type === "exam"
+
             ? (
                 m.is_locked
                   ? "LOCKED"
                   : "UNLOCKED"
               )
+
             : "AVAILABLE"
         }
 
@@ -2948,6 +2685,7 @@ async function loadArchive() {
         ${
           m.material_type === "exam" &&
           m.is_locked
+
             ? `
 
               <input
@@ -2962,6 +2700,7 @@ async function loadArchive() {
               </button>
 
             `
+
             : ""
         }
 
@@ -2993,11 +2732,11 @@ async function loadArchive() {
         () =>
           unlockExam(
             m.id,
+
             document.getElementById(
               `code-${m.id}`
             ).value
           );
-
     }
 
 
@@ -3013,7 +2752,6 @@ async function loadArchive() {
     );
 
   });
-
 }
 
 
@@ -3032,8 +2770,8 @@ async function unlockExam(
     await supabase.rpc(
       "teacher_unlock_exam",
       {
-        p_material_id: id,
-        p_unlock_code: code
+        p_material_id:id,
+        p_unlock_code:code
       }
     );
 
@@ -3045,7 +2783,6 @@ async function unlockExam(
       error.message,
       "error"
     );
-
   }
 
 
@@ -3057,7 +2794,6 @@ async function unlockExam(
 
 
   await loadArchive();
-
 }
 
 
@@ -3084,7 +2820,6 @@ async function deleteMaterial(m) {
       .remove([
         m.storage_path
       ]);
-
   }
 
 
@@ -3107,12 +2842,10 @@ async function deleteMaterial(m) {
       error.message,
       "error"
     );
-
   }
 
 
   await loadArchive();
-
 }
 
 
@@ -3133,12 +2866,11 @@ function escapeHtml(v) {
 
 
   return d.innerHTML;
-
 }
 
 
 /* ============================================================
-   EXAM PROTECTION
+   VISIBILITY / EXAM PROTECTION
    ============================================================ */
 
 window.addEventListener(
@@ -3150,7 +2882,6 @@ window.addEventListener(
       handleViolationLockout(
         "Exam attempt locked after leaving the active window."
       );
-
     }
 
   }
@@ -3169,7 +2900,6 @@ document.addEventListener(
       handleViolationLockout(
         "Exam attempt locked after changing tabs."
       );
-
     }
 
   }
@@ -3184,6 +2914,10 @@ window.addEventListener(
   "DOMContentLoaded",
   () => {
 
+    /*
+     * Splash is completely independent from Supabase.
+     * It can NEVER permanently block the application.
+     */
 
     const splash =
       document.getElementById(
@@ -3202,18 +2936,21 @@ window.addEventListener(
         setTimeout(
           () => {
 
-            hide(
-              "splash-screen"
-            );
+            hide("splash-screen");
 
           },
           450
         );
 
+
       },
       1800
     );
 
+
+    /*
+     * Initialize Supabase immediately.
+     */
 
     const initialized =
       initializeSupabase();
@@ -3233,13 +2970,12 @@ window.addEventListener(
       );
 
       return;
-
     }
 
 
     /*
-      Authentication state listener.
-    */
+     * Listen for authentication changes.
+     */
 
     supabase.auth.onAuthStateChange(
       async (
@@ -3250,6 +2986,7 @@ window.addEventListener(
         if (
           event === "SIGNED_OUT"
         ) {
+
           return;
         }
 
@@ -3262,7 +2999,6 @@ window.addEventListener(
           await routeAuthenticatedUser(
             session.user
           );
-
         }
 
       }
@@ -3270,8 +3006,8 @@ window.addEventListener(
 
 
     /*
-      Restore previous session.
-    */
+     * Restore an existing session.
+     */
 
     setTimeout(
       async () => {
@@ -3279,7 +3015,7 @@ window.addEventListener(
         try {
 
           const {
-            data: {
+            data:{
               session
             },
             error
@@ -3300,7 +3036,6 @@ window.addEventListener(
             );
 
             return;
-
           }
 
 
@@ -3319,7 +3054,6 @@ window.addEventListener(
             show(
               "role-selection-screen"
             );
-
           }
 
         }
@@ -3335,7 +3069,6 @@ window.addEventListener(
           show(
             "role-selection-screen"
           );
-
         }
 
       },
@@ -3348,5 +3081,4 @@ window.addEventListener(
 </script>
 
 </body>
-
 </html>
