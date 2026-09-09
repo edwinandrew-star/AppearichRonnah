@@ -1363,14 +1363,19 @@ async function login() {
 
   try {
 
-    const {
-      data,
-      error
-    } =
-      await supabase.auth.signInWithPassword({
-        email,
-        password
-      });
+    /* Never leave the button stuck forever if the network/auth service does not respond. */
+    const signInRequest = supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+    const timeoutRequest = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("Sign-in timed out. Please check your internet connection and Supabase Auth settings.")), 15000)
+    );
+
+    const { data, error } = await Promise.race([
+      signInRequest,
+      timeoutRequest
+    ]);
 
 
     if (error) {
@@ -1533,15 +1538,35 @@ async function routeAuthenticatedUser(user) {
   currentUser = user;
 
 
-  const {
-    data:profile,
-    error
-  } =
-    await supabase
-      .from("profiles")
-      .select("role,full_name")
-      .eq("id", user.id)
-      .single();
+  /* Profile lookup must not block the UI forever. */
+  const profileRequest = supabase
+    .from("profiles")
+    .select("role,full_name")
+    .eq("id", user.id)
+    .single();
+
+  const profileTimeout = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error("Profile lookup timed out. Check the profiles table/RLS policies.")), 10000)
+  );
+
+  let profile;
+  let error;
+  try {
+    ({ data: profile, error } = await Promise.race([
+      profileRequest,
+      profileTimeout
+    ]));
+  } catch (profileLookupError) {
+    console.error("Profile lookup timeout/error:", profileLookupError);
+    message(
+      "auth-message",
+      "Login succeeded, but the profile could not be loaded. Check the profiles table and RLS policies.",
+      "error"
+    );
+    currentRole = null;
+    show("auth-screen");
+    return;
+  }
 
 
   if (error || !profile) {
@@ -2364,7 +2389,12 @@ async function openTeacherPortal() {
       .join("");
 
 
-  await loadArchive();
+  /* Do not block login on the teacher archive query. */
+  loadArchive().catch(error => {
+    console.error("Teacher archive load failed:", error);
+    const box = document.getElementById("admin-archive");
+    if (box) box.textContent = "Archive unavailable. You can still use the teacher portal.";
+  });
 }
 
 
