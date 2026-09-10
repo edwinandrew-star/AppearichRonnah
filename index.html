@@ -331,21 +331,26 @@ body.dark .theme-toggle::after{
 
 .hero{
     position:relative;
-    height:480px;
-    max-width:480px;
+    width:100%;
+    max-width:none;
+    height:520px;
     border-radius:0 0 42px 42px;
     overflow:hidden;
     color:var(--hero-text);
-    margin-bottom:45px;
+    margin:0 0 45px;
+    box-shadow:0 18px 45px rgba(0,0,0,.14);
 }
 
 .hero img{
     width:100%;
     height:100%;
     object-fit:cover;
-    object-position:center 42%;
+    object-position:center center;
     display:block;
+    transform:scale(1.01);
 }
+
+
 
 .hero::after{
     content:"";
@@ -453,22 +458,40 @@ body.dark .theme-toggle::after{
 .subject-grid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:14px;
+    gap:16px;
 }
 
 .subject-card{
-    background:var(--surface);
-    border:1px solid var(--line);
-    border-radius:15px;
-    padding:20px;
-    min-height:125px;
+    position:relative;
+    overflow:hidden;
+    background:#fff;
+    color:#111;
+    border:2px solid #111;
+    border-radius:20px;
+    padding:22px;
+    min-height:145px;
     transition:transform .2s,box-shadow .2s;
+    box-shadow:6px 6px 0 #111;
 }
 
-.subject-card:hover{
-    transform:translateY(-3px);
-    box-shadow:0 8px 25px rgba(0,0,0,.08);
+.subject-card:nth-child(3n+1){background:#ffd928;}
+.subject-card:nth-child(3n+2){background:#fff;}
+.subject-card:nth-child(3n){background:#111;color:#fff;}
+.subject-card:nth-child(3n) p,.subject-card:nth-child(3n) .subject-number{color:#ddd;}
+.subject-card::after{
+    content:"";
+    position:absolute;
+    width:90px;height:90px;
+    border-radius:50%;
+    right:-28px;bottom:-28px;
+    background:rgba(255,255,255,.22);
 }
+.subject-card:hover{
+    transform:translate(-2px,-5px);
+    box-shadow:10px 10px 0 #111;
+}
+
+.subject-number{font-weight:800;letter-spacing:1px;}
 
 .subject-number{
     font-size:11px;
@@ -485,6 +508,27 @@ body.dark .theme-toggle::after{
     color:var(--muted);
     font-size:13px;
 }
+
+/* SECURE EXAM MODE */
+#examPage{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    overflow:auto;
+    background:var(--bg);
+}
+#examPage .exam-shell{
+    min-height:100vh;
+}
+body.exam-mode{
+    overflow:hidden !important;
+}
+.timer.warning{
+    background:#d71920 !important;
+    color:#fff !important;
+    animation:timerPulse 1s infinite;
+}
+@keyframes timerPulse{50%{transform:scale(1.04);}}
 
 /* EXAMS */
 
@@ -1005,6 +1049,8 @@ body.dark .timer{
     }
 
     .hero{
+        width:100%;
+        max-width:none;
         height:390px;
         border-radius:0 0 32px 32px;
     }
@@ -3739,6 +3785,7 @@ async function renderExam(){
 
     activateExamSecurity();
 
+    history.pushState(null, "", location.href);
     requestFullscreen();
 
 }
@@ -4168,6 +4215,7 @@ async function autoSubmitExam(){
 
 let securityActive = false;
 let securityHandlers = [];
+let examViolationInProgress = false;
 
 function activateExamSecurity(){
 
@@ -4176,6 +4224,7 @@ function activateExamSecurity(){
     }
 
     securityActive = true;
+    document.body.classList.add("exam-mode");
 
     const visibilityHandler =
         async function(){
@@ -4257,7 +4306,7 @@ function activateExamSecurity(){
             document,
             "fullscreenchange",
             fullscreenHandler
-        ]
+        ],
     ];
 
 }
@@ -4277,6 +4326,7 @@ function deactivateExamSecurity(){
 
     securityHandlers = [];
     securityActive = false;
+    document.body.classList.remove("exam-mode");
 
 }
 
@@ -4410,9 +4460,14 @@ function showExamFinished(){
    BACK TO APP IF ESCAPE
 ========================================================== */
 
-window.addEventListener(
-    "beforeunload",
-    function(e){
+window.addEventListener("popstate", function(e){
+    if(activeAttempt){
+        history.pushState(null, "", location.href);
+        reportSecurity("browser_back", {});
+    }
+});
+
+window.addEventListener("beforeunload", function(e){
 
         if(activeAttempt){
 
@@ -5424,74 +5479,6 @@ window.addEventListener(
                 null,
                 "",
                 location.href
-            );
-
-        }
-
-    }
-);
-
-/* ==========================================================
-   PREVENT CONTEXT MENU DURING EXAM
-========================================================== */
-
-document.addEventListener(
-    "contextmenu",
-    function(e){
-
-        if(activeAttempt){
-
-            e.preventDefault();
-
-        }
-
-    }
-);
-
-/* ==========================================================
-   KEYBOARD SECURITY DURING EXAM
-========================================================== */
-
-document.addEventListener(
-    "keydown",
-    function(e){
-
-        if(!activeAttempt){
-            return;
-        }
-
-        /*
-         Block common shortcuts while examination
-         is active.
-        */
-
-        const blocked =
-            (
-                e.key === "F12"
-            ) ||
-            (
-                e.ctrlKey &&
-                e.shiftKey &&
-                ["I","J","C"].includes(
-                    e.key.toUpperCase()
-                )
-            ) ||
-            (
-                e.ctrlKey &&
-                ["U","S"].includes(
-                    e.key.toUpperCase()
-                )
-            );
-
-        if(blocked){
-
-            e.preventDefault();
-
-            reportSecurity(
-                "blocked_keyboard_action",
-                {
-                    key:e.key
-                }
             );
 
         }
