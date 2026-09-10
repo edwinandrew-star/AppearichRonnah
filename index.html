@@ -453,100 +453,37 @@ body.dark .theme-toggle::after{
 .subject-grid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:22px;
+    gap:14px;
 }
 
 .subject-card{
-    position:relative;
-    overflow:hidden;
-    background:#fff;
-    color:#111;
-    border:2px solid #111;
-    border-radius:20px;
-    padding:0;
-    min-height:0;
-    cursor:pointer;
-    transition:transform .25s ease,box-shadow .25s ease;
-}
-
-.subject-card::before{
-    content:"";
-    position:absolute;
-    left:0;
-    top:0;
-    bottom:0;
-    width:6px;
-    background:#f3d000;
-    z-index:3;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:15px;
+    padding:20px;
+    min-height:125px;
+    transition:transform .2s,box-shadow .2s;
 }
 
 .subject-card:hover{
-    transform:translateY(-6px);
-    box-shadow:0 15px 35px rgba(0,0,0,.16);
-}
-
-.subject-image{
-    height:180px;
-    background:#111;
-    overflow:hidden;
-}
-
-.subject-image img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
-    transition:transform .3s ease;
-}
-
-.subject-card:hover .subject-image img{
-    transform:scale(1.05);
-}
-
-.subject-card-content{
-    padding:20px;
+    transform:translateY(-3px);
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
 }
 
 .subject-number{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    width:40px;
-    height:40px;
-    margin-bottom:12px;
-    background:#f3d000;
-    color:#111;
-    font-weight:900;
-    border-radius:50%;
+    font-size:11px;
+    color:var(--muted);
+    margin-bottom:13px;
 }
 
 .subject-card h3{
     font-size:18px;
     margin-bottom:7px;
-    color:#111;
 }
 
 .subject-card p{
-    color:#555;
+    color:var(--muted);
     font-size:13px;
-}
-
-body.dark .subject-card{
-    background:#111;
-    color:#fff;
-    border-color:#fff;
-}
-
-body.dark .subject-card h3{
-    color:#fff;
-}
-
-body.dark .subject-card p{
-    color:#ccc;
-}
-
-body.dark .subject-image{
-    background:#000;
 }
 
 /* EXAMS */
@@ -1085,12 +1022,9 @@ body.dark .timer{
         gap:10px;
     }
 
-    .subject-image{
-        height:135px;
-    }
-
-    .subject-card-content{
+    .subject-card{
         padding:15px;
+        min-height:115px;
     }
 
     .subject-card h3{
@@ -1415,9 +1349,9 @@ body.dark .timer{
 <section class="hero" id="home">
 
     <img
-        src="images/home-hero.jpg"
+        src="images/hero-home.jpg"
         alt="APPEARICH"
-        onerror="this.onerror=null;this.src='images/home-hero.png';"
+        onerror="this.onerror=null;this.src='images/hero-home.png';"
     >
 
     <div class="hero-content">
@@ -1482,48 +1416,57 @@ body.dark .timer{
         <div class="subject-grid" id="subjectGrid">
 
             <div class="subject-card" data-subject="Mathematics">
-                <div class="subject-image"><img src="images/mathematics.jpg" alt="Mathematics" loading="lazy"></div>
-                <div class="subject-card-content"><div class="subject-number">01</div><h3>Mathematics</h3><p>Lessons, notes and examinations</p></div>
+                <div class="subject-number">01</div>
+                <h3>Mathematics</h3>
+                <p>Lessons, notes and examinations</p>
             </div>
 
             <div class="subject-card" data-subject="Physics">
-                <div class="subject-image"><img src="images/physics.jpg" alt="Physics" loading="lazy"></div>
-                <div class="subject-card-content"><div class="subject-number">02</div><h3>Physics</h3><p>Lessons, notes and examinations</p></div>
+                <div class="subject-number">02</div>
+                <h3>Physics</h3>
+                <p>Lessons, notes and examinations</p>
             </div>
 
             <div class="subject-card" data-subject="Economics">
-                <div class="subject-image"><img src="images/economics.jpg" alt="Economics" loading="lazy"></div>
-                <div class="subject-card-content"><div class="subject-number">03</div><h3>Economics</h3><p>Lessons, notes and examinations</p></div>
+                <div class="subject-number">03</div>
+                <h3>Economics</h3>
+                <p>Lessons, notes and examinations</p>
             </div>
 
             <div class="subject-card" data-subject="Biology">
-                <div class="subject-image"><img src="images/biology.jpg" alt="Biology" loading="lazy"></div>
-                <div class="subject-card-content"><div class="subject-number">04</div><h3>Biology</h3><p>Lessons, notes and examinations</p></div>
+                <div class="subject-number">04</div>
+                <h3>Biology</h3>
+                <p>Lessons, notes and examinations</p>
             </div>
 
             <div class="subject-card" data-subject="Chemistry">
-                <div class="subject-image"><img src="images/chemistry.jpg" alt="Chemistry" loading="lazy"></div>
-                <div class="subject-card-content"><div class="subject-number">05</div><h3>Chemistry</h3><p>Lessons, notes and examinations</p></div>
+                <div class="subject-number">05</div>
+                <h3>Chemistry</h3>
+                <p>Lessons, notes and examinations</p>
             </div>
 
             <div class="subject-card" data-subject="Swahili">
-                <div class="subject-image"><img src="images/swahili.jpg" alt="Swahili" loading="lazy"></div>
-                <div class="subject-card-content"><div class="subject-number">06</div><h3>Swahili</h3><p>Lessons, notes and examinations</p></div>
+                <div class="subject-number">06</div>
+                <h3>Swahili</h3>
+                <p>Lessons, notes and examinations</p>
             </div>
 
             <div class="subject-card" data-subject="English">
-                <div class="subject-image"><img src="images/english.jpg" alt="English" loading="lazy"></div>
-                <div class="subject-card-content"><div class="subject-number">07</div><h3>English</h3><p>Lessons, notes and examinations</p></div>
+                <div class="subject-number">07</div>
+                <h3>English</h3>
+                <p>Lessons, notes and examinations</p>
             </div>
 
             <div class="subject-card" data-subject="Computer Studies">
-                <div class="subject-image"><img src="images/computer-studies.jpg" alt="Computer Studies" loading="lazy"></div>
-                <div class="subject-card-content"><div class="subject-number">08</div><h3>Computer Studies</h3><p>Lessons, notes and examinations</p></div>
+                <div class="subject-number">08</div>
+                <h3>Computer Studies</h3>
+                <p>Lessons, notes and examinations</p>
             </div>
 
             <div class="subject-card" data-subject="Business Studies">
-                <div class="subject-image"><img src="images/business-studies.jpg" alt="Business Studies" loading="lazy"></div>
-                <div class="subject-card-content"><div class="subject-number">09</div><h3>Business Studies</h3><p>Lessons, notes and examinations</p></div>
+                <div class="subject-number">09</div>
+                <h3>Business Studies</h3>
+                <p>Lessons, notes and examinations</p>
             </div>
 
         </div>
@@ -1960,7 +1903,7 @@ const SUPABASE_URL =
     "https://ccrxhifqtdhnkmxbafks.supabase.co";
 
 const SUPABASE_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNjcnhoaWZxdGRobmtteGJhZmtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3NTQ2MzksImV4cCI6MjEwNDMzMDYzOX0.g3YiiUNwdvsuwkF2E0HuzFm4xSOobueKTAzYAU-Vt4g";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNjcnhoaWZxdGRobmtteGJhZmtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3NTQ2MzksImV4cCI6MjEwNDMzMDYzOX0.g3YiiUNwdvsuwxE2F0HuzFm4xSOobueKTAzYAU-Vt4g";
 
 const supabaseClient =
     window.supabase.createClient(
@@ -2186,6 +2129,7 @@ $("teacherShowLogin").addEventListener("click",function(){
 $("studentSignupForm").addEventListener(
     "submit",
     async function(e){
+
         e.preventDefault();
         clearAuthMessage();
 
@@ -2194,33 +2138,43 @@ $("studentSignupForm").addEventListener(
         const password = $("studentSignupPassword").value;
 
         try{
-            const {error} = await supabaseClient.auth.signUp({
-                email,
-                password,
-                options:{
-                    data:{
-                        full_name:name,
-                        requested_role:"student"
+
+            const {data,error} =
+                await supabaseClient.auth.signUp({
+                    email,
+                    password,
+                    options:{
+                        data:{
+                            full_name:name,
+                            requested_role:"student"
+                        }
                     }
-                }
-            });
+                });
 
             if(error) throw error;
 
             showAuthMessage(
-                "Student account created successfully. Check your email if confirmation is required.",
+                "Student account created successfully. You can now use the Student Portal.",
                 "success"
             );
+
+            $("studentSignupForm").reset();
+
         }catch(error){
-            console.error("Student signup:",error);
-            showAuthMessage(error.message || "Unable to create student account.");
+
+            showAuthMessage(
+                error.message || "Unable to create student account."
+            );
+
         }
+
     }
 );
 
 $("teacherSignupForm").addEventListener(
     "submit",
     async function(e){
+
         e.preventDefault();
         clearAuthMessage();
 
@@ -2229,27 +2183,36 @@ $("teacherSignupForm").addEventListener(
         const password = $("teacherSignupPassword").value;
 
         try{
-            const {error} = await supabaseClient.auth.signUp({
-                email,
-                password,
-                options:{
-                    data:{
-                        full_name:name,
-                        requested_role:"teacher"
+
+            const {data,error} =
+                await supabaseClient.auth.signUp({
+                    email,
+                    password,
+                    options:{
+                        data:{
+                            full_name:name,
+                            requested_role:"teacher"
+                        }
                     }
-                }
-            });
+                });
 
             if(error) throw error;
 
             showAuthMessage(
-                "Teacher account created successfully. Check your email if confirmation is required.",
+                "Teacher account created successfully. You can now use the Teacher Portal.",
                 "success"
             );
+
+            $("teacherSignupForm").reset();
+
         }catch(error){
-            console.error("Teacher signup:",error);
-            showAuthMessage(error.message || "Unable to create teacher account.");
+
+            showAuthMessage(
+                error.message || "Unable to create teacher account."
+            );
+
         }
+
     }
 );
 
@@ -2285,7 +2248,7 @@ $("studentLoginForm").addEventListener(
                 $("studentLoginPassword").value
             );
 
-            await initializeUser();
+            await initializeUser("student");
 
         }catch(error){
 
@@ -2313,7 +2276,7 @@ $("teacherLoginForm").addEventListener(
                 $("teacherLoginPassword").value
             );
 
-            await initializeUser();
+            await initializeUser("teacher");
 
         }catch(error){
 
@@ -2330,57 +2293,116 @@ $("teacherLoginForm").addEventListener(
    INITIALIZE USER
 ========================================================== */
 
-async function initializeUser(){
+async function initializeUser(expectedRole=null){
 
     const {
-        data:{user},
-        error:userError
-    } = await supabaseClient.auth.getUser();
-
-    if(userError) throw userError;
+        data:{user}
+    } =
+        await supabaseClient.auth.getUser();
 
     if(!user){
+
         showAuth();
         return;
     }
 
     currentUser = user;
 
-    const {data:profile,error:profileError} =
+    const {data:profile,error} =
         await supabaseClient
         .from("profiles")
         .select("*")
         .eq("id",user.id)
         .maybeSingle();
 
-    if(profileError){
-        console.error("Profile loading error:",profileError);
-        showAuthMessage("Unable to load your profile.");
-        return;
-    }
+    if(error){
 
-    if(!profile){
+        console.error(error);
+
         showAuthMessage(
-            "Your account exists, but your profile was not created. Run the supplied Supabase SQL, then sign in again."
+            "Unable to load your profile."
         );
+
         return;
     }
 
     currentProfile = profile;
+
+    if(!profile){
+
+        showAuthMessage(
+            "Your profile has not been created yet. Please make sure the Supabase profile trigger is installed."
+        );
+
+        await supabaseClient.auth.signOut();
+        return;
+    }
+
+    const actualRole =
+        String(profile.role || "student").toLowerCase();
+
+    if(actualRole !== "student" && actualRole !== "teacher"){
+
+        await supabaseClient.auth.signOut();
+
+        showAuthMessage(
+            "This account has an invalid role. Please contact support."
+        );
+
+        return;
+    }
+
+    /*
+     When signing in through a specific portal, enforce the
+     role stored in the user's profile. A teacher cannot enter
+     through the Student Portal, and a student cannot enter
+     through the Teacher Portal.
+    */
+    if(expectedRole && actualRole !== expectedRole){
+
+        await supabaseClient.auth.signOut();
+
+        if(expectedRole === "student"){
+
+            showAuthMessage(
+                "This account is registered as a teacher. Please use the Teacher Portal."
+            );
+
+        }else{
+
+            showAuthMessage(
+                "This account is registered as a student. Please use the Student Portal."
+            );
+
+        }
+
+        return;
+    }
+
     showApp();
 
-    if(profile.role === "teacher"){
+    if(actualRole === "teacher"){
+
         $("studentDashboard").style.display = "none";
         $("teacherDashboard").style.display = "block";
+
         $("teacherWelcomeName").textContent =
-            "Welcome, " + (profile.full_name || "Teacher");
+            "Welcome, " +
+            (profile.full_name || "Teacher");
+
         await loadTeacherDashboard();
+
     }else{
+
         $("teacherDashboard").style.display = "none";
         $("studentDashboard").style.display = "block";
+
         $("welcomeName").textContent =
-            "Welcome, " + (profile.full_name || "Student");
+            "Welcome, " +
+            (profile.full_name || "Student");
+
         await loadStudentDashboard();
+
     }
 
 }
@@ -2603,14 +2625,6 @@ document
 
     });
 
-});
-
-/* SUBJECT IMAGE FALLBACK */
-document.querySelectorAll(".subject-image img").forEach(function(img){
-    img.addEventListener("error",function(){
-        this.style.display="none";
-        this.parentElement.style.background="#111";
-    });
 });
 
 /* ==========================================================
